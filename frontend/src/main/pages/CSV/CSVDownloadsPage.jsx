@@ -1,43 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import { Accordion } from "react-bootstrap";
+import { Accordion, Form, Button } from "react-bootstrap";
 
 export default function CSVDownloadsPage() {
+  const [quarter, setQuarter] = useState("");
+  const [subjectArea, setSubjectArea] = useState("");
+
   return (
     <BasicLayout>
       <div className="container mt-3">
         <h1>CSV Downloads</h1>
-        <Accordion>
-          <Accordion.Item eventKey="by-quarter" key="by-quarter">
-            <Accordion.Header>Download all UCSB classes by Quarter</Accordion.Header>
+
+        <Accordion defaultActiveKey="by-quarter" className="mt-3">
+
+          {/* Download by Quarter */}
+          <Accordion.Item eventKey="by-quarter">
+            <Accordion.Header>
+              Download all UCSB classes by Quarter
+            </Accordion.Header>
             <Accordion.Body>
-              Download all classes for a given quarter (in <code>yyyyq</code>{" "}
-              format). For now, use{" "}
-              <a href="/swagger-ui/index.html#/API%20for%20course%20data%20as%20CSV%20downloads/csvForCourses">
-                this endpoint
-              </a>
-              . Example quarters: <code>20254</code> (F25), <code>20261</code>{" "}
-              (W26), <code>20262</code> (S26).
+
+              <Form>
+                <Form.Group className="mb-3" controlId="quarterOnly">
+                  <Form.Label>Quarter (yyyyq)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="e.g. 20261"
+                    value={quarter}
+                    onChange={(e) => setQuarter(e.target.value)}
+                    pattern="\d{5}"
+                  />
+                  <Form.Text muted>
+                    Example: 20254 (F25), 20261 (W26), 20262 (S26)
+                  </Form.Text>
+                </Form.Group>
+
+                <Button variant="primary" disabled={!quarter}>
+                  Download CSV
+                </Button>
+              </Form>
+
             </Accordion.Body>
           </Accordion.Item>
 
-          <Accordion.Item
-            eventKey="by-quarter-and-subject-area"
-            key="by-quarter-and-subject-area"
-          >
+          {/* Download by Quarter + Subject Area */}
+          <Accordion.Item eventKey="by-quarter-and-subject-area">
             <Accordion.Header>
-              Download by Quarter and Subject Area
+              Download all UCSB classes by Quarter and Subject Area
             </Accordion.Header>
             <Accordion.Body>
-              Download classes for a specific subject area and quarter (using{" "}
-              <code>yyyyq</code>). For now, use{" "}
-              <a href="/swagger-ui/index.html#/API%20for%20course%20data%20as%20CSV%20downloads/csvForCoursesQuarterAndSubjectArea">
-                this endpoint
-              </a>
-              . Example: quarter <code>20261</code>, subject area{" "}
-              <code>CMPSC</code>.
+
+              <Form>
+                <Form.Group className="mb-3" controlId="quarterWithSubject">
+                  <Form.Label>Quarter (yyyyq)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="e.g. 20261"
+                    value={quarter}
+                    onChange={(e) => setQuarter(e.target.value)}
+                    pattern="\d{5}"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="subjectArea">
+                  <Form.Label>Subject Area</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="e.g. CMPSC"
+                    value={subjectArea}
+                    onChange={(e) => setSubjectArea(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Button
+                  variant="primary"
+                  disabled={!quarter || !subjectArea}
+                >
+                  Download CSV
+                </Button>
+
+              </Form>
+
             </Accordion.Body>
           </Accordion.Item>
+
         </Accordion>
       </div>
     </BasicLayout>
