@@ -5,6 +5,16 @@ import { Accordion, Form, Button } from "react-bootstrap";
 export default function CSVDownloadsPage() {
   const [quarter, setQuarter] = useState("");
   const [subjectArea, setSubjectArea] = useState("");
+  const normalizedQuarter = quarter.trim();
+  const normalizedSubjectArea = subjectArea.trim().toUpperCase();
+
+  const isValidQuarter = /^\d{5}$/.test(normalizedQuarter);
+  const isValidSubjectArea = normalizedSubjectArea.length > 0;
+
+  const byQuarterUrl = `/api/courses/csv/quarter?yyyyq=${encodeURIComponent(normalizedQuarter)}`;
+  const byQuarterAndSubjectUrl =
+    `/api/courses/csv/byQuarterAndSubjectArea?yyyyq=${encodeURIComponent(normalizedQuarter)}` +
+    `&subjectArea=${encodeURIComponent(normalizedSubjectArea)}`;
 
   return (
     <BasicLayout>
@@ -35,7 +45,11 @@ export default function CSVDownloadsPage() {
                   </Form.Text>
                 </Form.Group>
 
-                <Button variant="primary" disabled={!quarter}>
+                <Button
+                  onClick={() => window.location.assign(byQuarterUrl)}
+                  variant="primary"
+                  disabled={!isValidQuarter}
+                >
                   Download CSV
                 </Button>
               </Form>
@@ -73,8 +87,9 @@ export default function CSVDownloadsPage() {
                 </Form.Group>
 
                 <Button
+                  onClick={() => window.location.assign(byQuarterAndSubjectUrl)}
                   variant="primary"
-                  disabled={!quarter || !subjectArea}
+                  disabled={!isValidQuarter || !isValidSubjectArea}
                 >
                   Download CSV
                 </Button>
