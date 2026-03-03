@@ -40,14 +40,12 @@ export default function CSVDownloadsPage() {
         <h1>CSV Downloads</h1>
 
         <Accordion defaultActiveKey="by-quarter" className="mt-3">
-
           {/* Download by Quarter */}
           <Accordion.Item eventKey="by-quarter">
             <Accordion.Header>
               Download all UCSB classes by Quarter
             </Accordion.Header>
             <Accordion.Body>
-
               <Form onSubmit={handleQuarterSubmit}>
                 <Form.Group className="mb-3" controlId="quarterOnly">
                   <Form.Label>Quarter (yyyyq)</Form.Label>
@@ -71,7 +69,6 @@ export default function CSVDownloadsPage() {
                   Download CSV
                 </Button>
               </Form>
-
             </Accordion.Body>
           </Accordion.Item>
 
@@ -81,7 +78,6 @@ export default function CSVDownloadsPage() {
               Download all UCSB classes by Quarter and Subject Area
             </Accordion.Header>
             <Accordion.Body>
-
               <Form onSubmit={handleQuarterSubjectSubmit}>
                 <Form.Group className="mb-3" controlId="quarterWithSubject">
                   <Form.Label>Quarter (yyyyq)</Form.Label>
@@ -111,12 +107,9 @@ export default function CSVDownloadsPage() {
                 >
                   Download CSV
                 </Button>
-
               </Form>
-
             </Accordion.Body>
           </Accordion.Item>
-
         </Accordion>
       </div>
     </BasicLayout>
