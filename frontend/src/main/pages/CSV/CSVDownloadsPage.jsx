@@ -16,6 +16,24 @@ export default function CSVDownloadsPage() {
     `/api/courses/csv/byQuarterAndSubjectArea?yyyyq=${encodeURIComponent(normalizedQuarter)}` +
     `&subjectArea=${encodeURIComponent(normalizedSubjectArea)}`;
 
+  const downloadCsv = (url) => {
+    window.location.assign(url);
+  };
+
+  const handleQuarterSubmit = (e) => {
+    e.preventDefault();
+    if (isValidQuarter) {
+      downloadCsv(byQuarterUrl);
+    }
+  };
+
+  const handleQuarterSubjectSubmit = (e) => {
+    e.preventDefault();
+    if (isValidQuarter && isValidSubjectArea) {
+      downloadCsv(byQuarterAndSubjectUrl);
+    }
+  };
+
   return (
     <BasicLayout>
       <div className="container mt-3">
@@ -30,7 +48,7 @@ export default function CSVDownloadsPage() {
             </Accordion.Header>
             <Accordion.Body>
 
-              <Form>
+              <Form onSubmit={handleQuarterSubmit}>
                 <Form.Group className="mb-3" controlId="quarterOnly">
                   <Form.Label>Quarter (yyyyq)</Form.Label>
                   <Form.Control
@@ -46,7 +64,7 @@ export default function CSVDownloadsPage() {
                 </Form.Group>
 
                 <Button
-                  onClick={() => window.location.assign(byQuarterUrl)}
+                  type="submit"
                   variant="primary"
                   disabled={!isValidQuarter}
                 >
@@ -64,7 +82,7 @@ export default function CSVDownloadsPage() {
             </Accordion.Header>
             <Accordion.Body>
 
-              <Form>
+              <Form onSubmit={handleQuarterSubjectSubmit}>
                 <Form.Group className="mb-3" controlId="quarterWithSubject">
                   <Form.Label>Quarter (yyyyq)</Form.Label>
                   <Form.Control
@@ -87,7 +105,7 @@ export default function CSVDownloadsPage() {
                 </Form.Group>
 
                 <Button
-                  onClick={() => window.location.assign(byQuarterAndSubjectUrl)}
+                  type="submit"
                   variant="primary"
                   disabled={!isValidQuarter || !isValidSubjectArea}
                 >
