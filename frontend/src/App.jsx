@@ -25,7 +25,6 @@ import CourseOverTimeBuildingsIndexPage from "main/pages/CourseOverTime/CourseOv
 
 import GeneralEducationSearchPage from "main/pages/GeneralEducation/Search/GeneralEducationSearchPage";
 import CourseDetailsIndexPage from "main/pages/CourseDetails/CourseDetailsIndexPage";
-
 import CSVDownloadsPage from "main/pages/CSV/CSVDownloadsPage";
 
 function App() {
