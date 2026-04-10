@@ -72,6 +72,7 @@ export default defineConfig([
             // Vitest recommended rules
             ...vitest.configs.recommended.rules,
             "vitest/expect-expect": "off",
+            "vitest/no-conditional-expect": "off",
         },
     },
 ]);

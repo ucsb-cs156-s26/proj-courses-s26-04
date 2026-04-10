@@ -69,7 +69,7 @@ describe("TestJobsForm tests", () => {
 
     fireEvent.change(sleepMs, { target: { value: "-100" } });
     expect(sleepMs).toHaveValue(-100);
-    fireEvent.blur(sleepMs)
+    fireEvent.blur(sleepMs);
     fireEvent.click(submitButton);
 
     expect(
