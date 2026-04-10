@@ -212,8 +212,8 @@ describe("PersonalScheduleEvent tests", () => {
 
     // Check if the event card has correct styles
     const card = screen.getByTestId(`${testId}-${event.id}`);
-    expect(card).toHaveStyle("background-color: lightblue");
-    expect(card).toHaveStyle("border: 2px solid blue");
+    expect(card).toHaveStyle("background-color: rgb(173, 216, 230)");
+    expect(card).toHaveStyle("border: 2px solid rgb(0, 0, 255)");
 
     // Check if time is displayed
     expect(
@@ -584,8 +584,8 @@ describe("PersonalScheduleEvent tests", () => {
       `SchedulerEvent-${smallEvent.id}`,
     );
     expect(eventCard).toHaveClass("scheduler-event");
-    expect(eventCard).toHaveStyle("background-color: blue");
-    expect(eventCard).toHaveStyle("border: 2px solid black");
+    expect(eventCard).toHaveStyle("background-color: rgb(0, 0, 255)");
+    expect(eventCard).toHaveStyle("border: 2px solid rgb(0, 0, 0)");
 
     // Since height is < 20, the title should not be visible
     expect(
@@ -623,8 +623,8 @@ describe("PersonalScheduleEvent tests", () => {
       `SchedulerEvent-${initialEvent.id}`,
     );
     expect(eventElement).toHaveStyle(`top: ${initialTop}px`);
-    expect(eventElement).toHaveStyle("background-color: blue");
-    expect(eventElement).toHaveStyle("border: 2px solid black");
+    expect(eventElement).toHaveStyle("background-color: rgb(0, 0, 255)");
+    expect(eventElement).toHaveStyle("border: 2px solid rgb(0, 0, 0)");
 
     // Initial title is visible with event-title-sm class (25 <= height < 40)
     const initialTitle = within(container).getByTestId("SchedulerEvent-title");
@@ -658,8 +658,8 @@ describe("PersonalScheduleEvent tests", () => {
 
     // Verify all properties updated correctly
     expect(eventElement).toHaveStyle(`top: ${updatedTop}px`);
-    expect(eventElement).toHaveStyle("background-color: red");
-    expect(eventElement).toHaveStyle("border: 2px solid green");
+    expect(eventElement).toHaveStyle("background-color: rgb(255, 0, 0)");
+    expect(eventElement).toHaveStyle("border: 2px solid rgb(0, 128, 0)");
 
     // Verify title now has event-title-lg class (height >= 60)
     const updatedTitle = within(container).getByTestId("SchedulerEvent-title");

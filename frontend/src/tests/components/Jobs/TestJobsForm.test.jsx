@@ -61,12 +61,15 @@ describe("TestJobsForm tests", () => {
       </Router>,
     );
 
+    expect(await screen.findByTestId("TestJobForm-fail")).toBeInTheDocument();
+
     const submitButton = screen.getByTestId("TestJobForm-Submit-Button");
     const sleepMs = screen.getByTestId("TestJobForm-sleepMs");
     expect(sleepMs).toBeValid();
 
-    fireEvent.change(sleepMs, { target: { value: "-1" } });
-    expect(sleepMs).toHaveValue(-1);
+    fireEvent.change(sleepMs, { target: { value: "-100" } });
+    expect(sleepMs).toHaveValue(-100);
+    fireEvent.blur(sleepMs)
     fireEvent.click(submitButton);
 
     expect(
