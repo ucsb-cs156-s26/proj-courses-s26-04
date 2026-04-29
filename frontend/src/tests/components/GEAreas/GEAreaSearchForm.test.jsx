@@ -9,6 +9,7 @@ import AxiosMockAdapter from "axios-mock-adapter";
 import { toast } from "react-toastify";
 import * as useBackend from "main/utils/useBackend.jsx";
 import * as systemInfo from "main/utils/systemInfo";
+import * as quarterUtilities from "main/utils/quarterUtilities";
 
 import GEAreaSearchForm from "main/components/GEAreas/GEAreaSearchForm";
 
@@ -16,12 +17,17 @@ vi.mock("react-toastify", () => ({
   toast: vi.fn(),
 }));
 
+vi.mock("main/utils/quarterUtilities", async () => {
+  const actual = await vi.importActual("main/utils/quarterUtilities");
+  return { ...actual, quarterRange: vi.fn(actual.quarterRange) };
+});
+
 let axiosMock;
 let useBackendSpy;
 
 describe("GEAreaSearchForm tests", () => {
   describe("GEAreaSearchForm tests with healthy backend", () => {
-    const queryClient = new QueryClient();
+    let queryClient;
     const addToast = vi.fn();
     let getItemSpy, setItemSpy;
 
@@ -29,6 +35,10 @@ describe("GEAreaSearchForm tests", () => {
       axiosMock = new AxiosMockAdapter(axios);
       axiosMock.reset();
       axiosMock.resetHistory();
+
+      queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+      });
 
       vi.clearAllMocks();
       // Silence console.error
@@ -38,11 +48,14 @@ describe("GEAreaSearchForm tests", () => {
       axiosMock
         .onGet("/api/currentUser")
         .reply(200, { loggedIn: true, username: "testuser" });
-      axiosMock.onGet("/api/systemInfo").reply(200, {
-        springH2ConsoleEnabled: false,
-        showSwaggerUILink: false,
-        startQtrYYYYQ: "20211",
-        endQtrYYYYQ: "20214",
+
+      vi.spyOn(systemInfo, "useSystemInfo").mockReturnValue({
+        data: {
+          startQtrYYYYQ: "20211",
+          endQtrYYYYQ: "20214",
+        },
+        isLoading: false,
+        isError: false,
       });
 
       // Mock GE areas endpoint
@@ -155,9 +168,7 @@ describe("GEAreaSearchForm tests", () => {
         isLoading: true,
         isError: false,
       };
-      const useSystemInfoSpy = vi
-        .spyOn(systemInfo, "useSystemInfo")
-        .mockReturnValue(emptyReactQuery);
+      vi.spyOn(systemInfo, "useSystemInfo").mockReturnValue(emptyReactQuery);
 
       // Quarter Field falls back on systemInfo quarters if LocalStorage Quarter is empty
       getItemSpy.mockImplementation((key) => {
@@ -173,7 +184,6 @@ describe("GEAreaSearchForm tests", () => {
       render(<WrappedForm />);
       expect(screen.getByLabelText("Quarter")).toBeInTheDocument();
       expect(screen.getByLabelText("Quarter").value).toEqual(fallbackStartQtr);
-      useSystemInfoSpy.mockRestore();
     });
 
     test("when local state for quarter is empty, we get ALL", () => {
@@ -246,6 +256,14 @@ describe("GEAreaSearchForm tests", () => {
 
       expect(setItemSpy).toHaveBeenCalledWith("GEAreaSearch.Quarter", "20212");
       expect(setItemSpy).toHaveBeenCalledWith("GEAreaSearch.Area", "A1");
+    });
+    test("falls back to startQtr when quarters is empty", () => {
+      quarterUtilities.quarterRange.mockReturnValue([{ yyyyq: null }]);
+      getItemSpy.mockImplementation(() => null);
+      render(<WrappedForm />);
+      expect(screen.getByTestId("GEAreaSearch.Status")).toHaveTextContent(
+        "W21",
+      );
     });
   });
 });
