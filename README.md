@@ -1,7 +1,7 @@
 # proj-courses
 
-### Sprint Planning Doc for S25: 
-- https://docs.google.com/document/d/1_6yE7yOBh4hRHPr4JbERSBSjDdJ2BI8Cbk99hbCmxDo/edit?usp=sharing
+### Sprint Planning Doc: 
+- <https://docs.google.com/document/d/1_6yE7yOBh4hRHPr4JbERSBSjDdJ2BI8Cbk99hbCmxDo/edit?usp=sharing>
 
 This repo contains the code for the CMPSC 156 legacy code project "Courses Search". 
 
@@ -10,6 +10,10 @@ The project provides a web application where users can search for UCSB courses i
 Users with a Google Account can also store past, current or future schedules of courses for particular quarters. 
 
 # Deployments
+
+
+Note: CMPSC 156 Student teams should *not* change the prod/qa links below to match their team's links; you should maintain the README.md file 
+so that it can be merged into the <https://github.com/ucsb-cs156/proj-courses/> repo at the end of the quarter.
 
 | Type | Link       | 
 |------|------------|
