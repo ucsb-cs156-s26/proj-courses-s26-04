@@ -5,7 +5,6 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { toast } from "react-toastify";
 import { http, HttpResponse } from "msw";
 
-
 export default {
   title: "pages/GeneralEducation/GeneralEducationSearchPage",
   component: GeneralEducationSearchPage,

@@ -19,10 +19,7 @@ export default function GeneralEducationSearchPage() {
     setGeneralEducationJSON(generalEducation);
   };
 
-  const mutation = useBackendMutation(
-    objectToAxiosParams,
-    { onSuccess },
-  );
+  const mutation = useBackendMutation(objectToAxiosParams, { onSuccess });
 
   async function fetchGeneralEducationJSON(_event, query) {
     mutation.mutate(query);
