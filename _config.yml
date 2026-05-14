@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s26/proj-courses-s26-04
 owner: ucsb-cs156-s26
 repo_name: proj-courses-s26-04
-pull_requests: []
+pull_requests: [{"author":{"id":"U_kgDOBuiegQ","is_bot":false,"login":"ErikRodriguez29","name":""},"headRefName":"11-feature-implement-the-generaleducationsearchpage","number":18,"title":"Implemented GE Search Page","url":"https://github.com/ucsb-cs156-s26/proj-courses-s26-04/pull/18"}]
