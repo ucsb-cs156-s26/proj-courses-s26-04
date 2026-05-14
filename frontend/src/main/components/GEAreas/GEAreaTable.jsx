@@ -199,7 +199,11 @@ export default function GEAreaTable({ generalEducation, schedules = [] }) {
   ];
   return (
     <>
-      <SectionsTableBase columns={columns} data={generalEducation} testid={testid} />
+      <SectionsTableBase
+        columns={columns}
+        data={generalEducation}
+        testid={testid}
+      />
     </>
   );
 }
