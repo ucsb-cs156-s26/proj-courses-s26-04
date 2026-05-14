@@ -22,9 +22,6 @@ export default function GeneralEducationSearchPage() {
   const mutation = useBackendMutation(
     objectToAxiosParams,
     { onSuccess },
-    // TODO: Remove this line and implement a test for caching
-    // Stryker disable next-line all : hard to set up test for caching
-    [],
   );
 
   async function fetchGeneralEducationJSON(_event, query) {
