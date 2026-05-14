@@ -4,6 +4,7 @@ import GeneralEducationSearchPage from "main/pages/GeneralEducation/Search/Gener
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { toast } from "react-toastify";
 import { http, HttpResponse } from "msw";
+import primaryFixtures from "fixtures/primaryFixtures";
 
 export default {
   title: "pages/GeneralEducation/GeneralEducationSearchPage",
@@ -25,7 +26,7 @@ Default.parameters = {
     }),
     http.get("/api/public/primariesge", ({ request }) => {
       toast(`Generating ${request.method} ${request.url}`);
-      return HttpResponse.json(generalEducationFixtures.f24_math_lowerDiv, {
+      return HttpResponse.json(primaryFixtures.f24_math_lowerDiv, {
         status: 200,
       });
     }),
