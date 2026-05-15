@@ -1,4 +1,5 @@
 import { vi } from "vitest";
+import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -39,6 +40,10 @@ describe("GeneralEducationSearchPage tests", () => {
   });
 
   test("Has the expected cell values when expanded", async () => {
+    axiosMock
+      .onGet("/api/public/primariesge")
+      .reply(200, primaryFixtures.f24_math_lowerDiv);
+
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -72,7 +77,9 @@ describe("GeneralEducationSearchPage tests", () => {
     });
   });
 
-  test("No courses shows when no courses are found", async () => {
+  test("primariesge GET uses qtr and area in the backend call", async () => {
+    axiosMock.onGet("/api/public/primariesge").reply(200, []);
+
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -80,5 +87,55 @@ describe("GeneralEducationSearchPage tests", () => {
         </MemoryRouter>
       </QueryClientProvider>,
     );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /submit/i }),
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await waitFor(() => {
+      const primariesgeCalls = axiosMock.history.get.filter((req) =>
+        String(req.url).includes("primariesge"),
+      );
+      expect(primariesgeCalls.length).toBeGreaterThanOrEqual(1);
+      expect(primariesgeCalls[primariesgeCalls.length - 1].params).toEqual({
+        qtr: "20221",
+        area: "ALL",
+      });
+    });
+  });
+
+  test("No courses shows when no courses are found", async () => {
+    axiosMock.onGet("/api/public/primariesge").reply(200, []);
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <GeneralEducationSearchPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /submit/i }),
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await waitFor(() => {
+      const primariesgeCalls = axiosMock.history.get.filter((req) =>
+        String(req.url).includes("primariesge"),
+      );
+      expect(primariesgeCalls.length).toBeGreaterThanOrEqual(1);
+    });
+
+    expect(
+      screen.queryByTestId(`${tableTestId}-row-0-expand-button`),
+    ).not.toBeInTheDocument();
   });
 });
