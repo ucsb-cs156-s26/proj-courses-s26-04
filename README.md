@@ -120,3 +120,8 @@ To run full mutation test coverage, as usual, use:
 ```
 mvn pitest:mutationCoverage
 ```
+
+## Rate Limiting
+
+This app implements rate limiting. The rate can be adjusted in:
+* `src/main/java/edu/ucsb/cs156/courses/filters/RateLimitFilter.java`
