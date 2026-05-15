@@ -29,7 +29,7 @@ export default function GeneralEducationSearchPage() {
       <div className="pt-2">
         <h5>UCSB General Education Search</h5>
         <GEAreaSearchForm fetchJSON={fetchGeneralEducationJSON} />
-        <GEAreaTable generalEducation={generalEducationJSON} schedules={[]} />
+        <GEAreaTable generalEducation={generalEducationJSON} />
       </div>
     </BasicLayout>
   );

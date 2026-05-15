@@ -14,7 +14,7 @@ import {
 } from "main/utils/sectionUtils.jsx";
 import { yyyyqToQyy } from "main/utils/quarterUtilities";
 
-export default function GEAreaTable({ generalEducation = [] }) {
+export default function GEAreaTable({ generalEducation}) {
   const testid = "GEAreaTable";
 
   const columns = [
