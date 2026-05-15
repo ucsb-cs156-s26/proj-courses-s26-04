@@ -1,9 +1,5 @@
 import SectionsTableBase from "main/components/SectionsTableBase";
 
-import { useBackendMutation } from "main/utils/useBackend";
-import { toast } from "react-toastify";
-import { useCurrentUser } from "main/utils/currentUser.jsx";
-
 import {
   formatDays,
   formatInstructors,
@@ -15,73 +11,10 @@ import {
   getSectionField,
   renderInfoLink,
   renderDetailPageLink,
-  shouldShowAddToScheduleLink,
-  getQuarter,
 } from "main/utils/sectionUtils.jsx";
 import { yyyyqToQyy } from "main/utils/quarterUtilities";
-import AddToScheduleModal from "main/components/PersonalSchedules/AddToScheduleModal";
 
-const objectToAxiosParams = (data) => {
-  return {
-    url: "/api/courses/post",
-    method: "POST",
-    params: {
-      enrollCd: data.enrollCd.toString(),
-      psId: data.psId.toString(),
-    },
-  };
-};
-
-const onSuccess = (response) => {
-  if (response.length < 3) {
-    toast(
-      `New course Created - id: ${response[0].id} enrollCd: ${response[0].enrollCd}`,
-    );
-  } else {
-    toast(
-      `Course ${response[0].enrollCd} replaced old section ${response[2].enrollCd} with new section ${response[1].enrollCd}`,
-    );
-  }
-};
-
-const onError = (error) => {
-  console.error("onError: error=", error);
-  const message =
-    error.response.data?.message ||
-    `An unexpected error occurred adding the schedule: ${JSON.stringify(error)}`;
-  toast.error(message);
-};
-
-export default function GEAreaTable({ generalEducation, schedules = [] }) {
-  if (!(generalEducation instanceof Array)) {
-    throw new Error("generalEducation prop must be an array");
-  }
-
-  if (!(schedules instanceof Array)) {
-    throw new Error("schedules prop must be an array");
-  }
-
-  if (schedules.length > 0 && !Object.hasOwn(schedules[0], "id")) {
-    throw new Error(
-      "schedules prop must be an array of objects with an 'id' property",
-    );
-  }
-
-  const { data: currentUser } = useCurrentUser();
-  const mutation = useBackendMutation(
-    objectToAxiosParams,
-    { onSuccess, onError },
-    [],
-  );
-
-  const addToScheduleCallback = (section, schedule, mutation) => {
-    const dataFinal = {
-      enrollCd: section.enrollCode,
-      psId: schedule,
-    };
-    mutation.mutate(dataFinal);
-  };
-
+export default function GEAreaTable({ generalEducation = [] }) {
   const testid = "GEAreaTable";
 
   const columns = [
@@ -171,30 +104,6 @@ export default function GEAreaTable({ generalEducation, schedules = [] }) {
       header: "Info",
       id: "info",
       cell: ({ row }) => renderInfoLink(row, testid),
-    },
-    {
-      header: "Action",
-      id: "action",
-      cell: ({ row }) => {
-        if (!currentUser.loggedIn) {
-          return <span data-testid={`${testid}-row-${row.id}-not-logged-in`} />;
-        } else if (!shouldShowAddToScheduleLink(row)) {
-          return <span data-testid={`${testid}-row-${row.id}-no-action`} />;
-        }
-        return (
-          <div className="d-flex align-items-center gap-2">
-            <AddToScheduleModal
-              section={getSection(row)}
-              quarter={getQuarter(row)}
-              onAdd={(section, schedule) =>
-                addToScheduleCallback(section, schedule, mutation)
-              }
-              schedules={schedules}
-              testid={`${testid}-cell-row-${row.id}-col-action`}
-            />
-          </div>
-        );
-      },
     },
   ];
   return (

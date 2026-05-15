@@ -52,7 +52,6 @@ describe("GEAreaTable tests", () => {
       "instructor",
       "enrollCode",
       "info",
-      "action",
     ].forEach((colId) => {
       expect(
         screen.getByTestId(`${testId}-cell-row-0-col-${colId}`),
