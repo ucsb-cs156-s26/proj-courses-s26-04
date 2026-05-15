@@ -1,6 +1,8 @@
 package edu.ucsb.cs156.courses.filters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import io.github.bucket4j.Bucket;
@@ -65,9 +67,9 @@ public class RateLimitFilterTests {
   @Test
   public void testCreateNewBucketReturnsNonNullBucket() {
     Bucket bucket = rateLimitFilter.createNewBucket();
-    assertEquals(true, bucket != null);
+    assertNotNull(bucket);
     // New bucket should allow consuming tokens
-    assertEquals(true, bucket.tryConsume(1));
+    assertTrue(bucket.tryConsume(1));
   }
 
   @Test
@@ -96,5 +98,57 @@ public class RateLimitFilterTests {
     // ip2 should still be allowed
     rateLimitFilter.doFilterInternal(request2, response2, filterChain);
     verify(response2, never()).setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+  }
+
+  @Test
+  public void testXForwardedForHeaderUsedWhenPresent() throws Exception {
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    FilterChain filterChain = mock(FilterChain.class);
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+
+    // Simulate a proxied request where X-Forwarded-For contains the real client IP
+    when(request.getHeader("X-Forwarded-For")).thenReturn("203.0.113.1, 10.0.0.1");
+    when(response.getWriter()).thenReturn(printWriter);
+
+    // Exhaust the bucket for the real client IP (203.0.113.1)
+    for (int i = 0; i < 10; i++) {
+      rateLimitFilter.doFilterInternal(request, response, filterChain);
+    }
+    rateLimitFilter.doFilterInternal(request, response, filterChain);
+
+    verify(filterChain, times(10)).doFilter(request, response);
+    verify(response, times(1)).setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+  }
+
+  @Test
+  public void testRemoteAddrUsedWhenXForwardedForIsAbsent() throws Exception {
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    FilterChain filterChain = mock(FilterChain.class);
+
+    when(request.getHeader("X-Forwarded-For")).thenReturn(null);
+    when(request.getRemoteAddr()).thenReturn("198.51.100.1");
+
+    rateLimitFilter.doFilterInternal(request, response, filterChain);
+
+    verify(filterChain, times(1)).doFilter(request, response);
+    verify(response, never()).setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+  }
+
+  @Test
+  public void testRemoteAddrUsedWhenXForwardedForIsBlank() throws Exception {
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    FilterChain filterChain = mock(FilterChain.class);
+
+    when(request.getHeader("X-Forwarded-For")).thenReturn("   ");
+    when(request.getRemoteAddr()).thenReturn("198.51.100.2");
+
+    rateLimitFilter.doFilterInternal(request, response, filterChain);
+
+    verify(filterChain, times(1)).doFilter(request, response);
+    verify(response, never()).setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
   }
 }

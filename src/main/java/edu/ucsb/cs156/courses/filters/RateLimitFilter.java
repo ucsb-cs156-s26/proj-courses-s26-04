@@ -35,8 +35,12 @@ public class RateLimitFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
-    // Get IP (Check X-Forwarded-For if behind a proxy like Nginx/AWS)
-    String ip = request.getRemoteAddr();
+    // Prefer X-Forwarded-For when behind a proxy like Nginx or AWS load balancers
+    String xForwardedFor = request.getHeader("X-Forwarded-For");
+    String ip =
+        (xForwardedFor != null && !xForwardedFor.isBlank())
+            ? xForwardedFor.split(",")[0].trim()
+            : request.getRemoteAddr();
 
     // Get or create the bucket for this IP
     Bucket bucket = cache.get(ip, key -> createNewBucket());
