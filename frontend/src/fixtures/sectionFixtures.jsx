@@ -92,9 +92,6 @@ export const oneSectionWithSession = [
   },
 ];
 
-
-
-
 export const oneLectureSectionWithNoDiscussion = [
   {
     courseInfo: {

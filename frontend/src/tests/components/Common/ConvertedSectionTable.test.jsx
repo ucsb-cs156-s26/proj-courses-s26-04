@@ -84,11 +84,15 @@ describe("ConvertedSectionTable tests", () => {
   });
 
   test("renders session value from session[5]", () => {
-  const testid = "SessionTestId";
-  render(<ConvertedSectionTable sections={oneSectionWithSession} testid={testid} />);
-  const session = screen.getByTestId(`${testid}-cell-row-0-col-session`);
-  expect(session).toBeInTheDocument();
-  expect(session).toHaveTextContent("A");
-});
-
+    const testid = "SessionTestId";
+    render(
+      <ConvertedSectionTable
+        sections={oneSectionWithSession}
+        testid={testid}
+      />,
+    );
+    const session = screen.getByTestId(`${testid}-cell-row-0-col-session`);
+    expect(session).toBeInTheDocument();
+    expect(session).toHaveTextContent("A");
+  });
 });
