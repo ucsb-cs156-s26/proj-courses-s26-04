@@ -28,7 +28,9 @@ describe("AdminUsersPage tests", () => {
 
   test("renders without crashing on three users", async () => {
     const queryClient = new QueryClient();
-    axiosMock.onGet("/api/admin/users").reply(200, usersFixtures.threeUsersPage);
+    axiosMock
+      .onGet("/api/admin/users")
+      .reply(200, usersFixtures.threeUsersPage);
 
     render(
       <QueryClientProvider client={queryClient}>
@@ -58,6 +60,15 @@ describe("AdminUsersPage tests", () => {
     expect(
       screen.getByTestId(`UsersTable-cell-row-0-col-admin`),
     ).toHaveTextContent("true");
+
+    const usersRequest = axiosMock.history.get.find(
+      (request) => request.url === "/api/admin/users",
+    );
+    expect(usersRequest.params).toEqual({
+      page: 0,
+      pageSize: 10,
+      sortDirection: "ASC",
+    });
   });
 
   test("renders empty table when backend unavailable", async () => {

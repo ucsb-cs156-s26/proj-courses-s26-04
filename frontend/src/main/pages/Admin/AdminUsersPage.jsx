@@ -1,4 +1,3 @@
-
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import UsersTable from "main/components/Users/UsersTable";
 import { useState } from "react";
@@ -25,7 +24,7 @@ const AdminUsersPage = () => {
         sortDirection: "ASC",
       },
     },
-    { content: [], totalPages:0 },
+    { content: [], totalPages: 0 },
   );
 
   return (
