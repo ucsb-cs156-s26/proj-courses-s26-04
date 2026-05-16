@@ -21,7 +21,7 @@ public class RateLimitFilterTests {
 
   @BeforeEach
   public void setUp() {
-    rateLimitFilter = new RateLimitFilter();
+    rateLimitFilter = new RateLimitFilter(10);
   }
 
   @Test

@@ -123,5 +123,12 @@ mvn pitest:mutationCoverage
 
 ## Rate Limiting
 
-This app implements rate limiting. The rate can be adjusted in:
-* `src/main/java/edu/ucsb/cs156/courses/filters/RateLimitFilter.java`
+This app implements per-IP rate limiting using Bucket4j backed by a Caffeine in-memory cache. The default limit is 10 requests per minute per IP address.
+
+The limit can be configured via the environment variable `REQUESTS_PER_MINUTE`, which overrides the `app.ratelimit.requestsPerMinute` property in `application.properties`.
+
+| Environment Variable | Property | Default | Description |
+|---|---|---|---|
+| `REQUESTS_PER_MINUTE` | `app.ratelimit.requestsPerMinute` | `10` | Maximum requests per minute per IP address |
+
+Requests exceeding the limit receive an HTTP 429 response.
