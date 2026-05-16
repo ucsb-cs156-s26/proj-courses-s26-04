@@ -28,7 +28,7 @@ describe("AdminUsersPage tests", () => {
 
   test("renders without crashing on three users", async () => {
     const queryClient = new QueryClient();
-    axiosMock.onGet("/api/admin/users").reply(200, usersFixtures.threeUsers);
+    axiosMock.onGet("/api/admin/users").reply(200, usersFixtures.threeUsersPage);
 
     render(
       <QueryClientProvider client={queryClient}>
