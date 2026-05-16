@@ -25,8 +25,8 @@ public class CoursesStartup {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  @Value("${app.endQtrYYYYQ:20222}")
-  private String endQtrYYYYQ;
+  //@Value("${app.endQtrYYYYQ:20222}")
+  //private String endQtrYYYYQ;
 
   /**
    * Called once at application startup time . Put code here if you want it to run once each time
@@ -45,7 +45,7 @@ public class CoursesStartup {
     } catch (Exception e) {
       log.error("Error in ucsbAPIQuarterService.loadAllQuarters():", e);
     }
-
+    String endQtrYYYYQ = ucsbAPIQuarterService.getEndQtrYYYYQ();
     JobContextConsumer updateCourseDataJob =
         updateCourseDataJobFactory.createForSubjectAndQuarterRange(
             "CMPSC", startQtrYYYYQ, endQtrYYYYQ, true);
@@ -64,7 +64,7 @@ public class CoursesStartup {
   public void runOnStartupInProductionOnly() {
     log.info("runOnStartupInProductionOnly called");
     // Launch course update job
-
+    String endQtrYYYYQ = ucsbAPIQuarterService.getEndQtrYYYYQ();
     JobContextConsumer updateCourseDataJob =
         updateCourseDataJobFactory.createForQuarterRange(startQtrYYYYQ, endQtrYYYYQ, true);
     jobService.runAsJob(updateCourseDataJob);
