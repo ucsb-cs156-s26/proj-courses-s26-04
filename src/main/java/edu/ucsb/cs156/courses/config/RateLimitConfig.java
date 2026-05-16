@@ -8,11 +8,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RateLimitConfig {
 
-  @Value("${app.ratelimit.requestsPerMinute}")
-  private int requestsPerMinute;
+  @Value("${app.ratelimit.initialBucketSize}")
+  private int initialBucketSize;
+
+  @Value("${app.ratelimit.refillPerMinute}")
+  private int refillPerMinute;
 
   @Bean
   public RateLimitFilter rateLimitFilter() {
-    return new RateLimitFilter(requestsPerMinute);
+    return new RateLimitFilter(initialBucketSize, refillPerMinute);
   }
 }

@@ -17,10 +17,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class RateLimitFilter extends OncePerRequestFilter {
 
-  private final int requestsPerMinute;
+  private final int initialBucketSize;
+  private final int refillPerMinute;
 
-  public RateLimitFilter(int requestsPerMinute) {
-    this.requestsPerMinute = requestsPerMinute;
+  public RateLimitFilter(int initialBucketSize, int refillPerMinute) {
+    this.initialBucketSize = initialBucketSize;
+    this.refillPerMinute = refillPerMinute;
   }
 
   // Caffeine cache: Keys are IP addresses, Values are Bucket objects.
@@ -34,7 +36,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
   Bucket createNewBucket() {
     Bandwidth limit =
         Bandwidth.classic(
-            requestsPerMinute, Refill.intervally(requestsPerMinute, Duration.ofMinutes(1)));
+            initialBucketSize, Refill.intervally(refillPerMinute, Duration.ofMinutes(1)));
     return Bucket.builder().addLimit(limit).build();
   }
 
