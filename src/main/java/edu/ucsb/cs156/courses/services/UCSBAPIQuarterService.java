@@ -101,7 +101,6 @@ public class UCSBAPIQuarterService {
   public UCSBAPIQuarter getCurrentQuarter() throws Exception {
     if (cachedCurrentQuarter != null
         && Instant.now().isBefore(cacheTime.plus(CACHE_DURATION_HOURS, ChronoUnit.HOURS))) {
-      log.info("Returning cached current quarter");
       return cachedCurrentQuarter;
     }
 
