@@ -61,6 +61,10 @@ public class UCSBAPIQuarterService {
     cacheTime = null;
   }
 
+  void expireCurrentQuarterCache() {
+    cacheTime = Instant.EPOCH;
+  }
+
   public static final String ALL_QUARTERS_ENDPOINT =
       "https://api.ucsb.edu/academics/quartercalendar/v1/quarters";
 
@@ -96,7 +100,6 @@ public class UCSBAPIQuarterService {
 
   public UCSBAPIQuarter getCurrentQuarter() throws Exception {
     if (cachedCurrentQuarter != null
-        && cacheTime != null
         && Instant.now().isBefore(cacheTime.plus(CACHE_DURATION_HOURS, ChronoUnit.HOURS))) {
       log.info("Returning cached current quarter");
       return cachedCurrentQuarter;
