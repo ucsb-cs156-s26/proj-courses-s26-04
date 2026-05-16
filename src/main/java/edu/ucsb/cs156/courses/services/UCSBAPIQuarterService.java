@@ -30,7 +30,7 @@ public class UCSBAPIQuarterService {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  //@Value("${app.endQtrYYYYQ:20222}")
+  // @Value("${app.endQtrYYYYQ:20222}")
   private String endQtrYYYYQ;
 
   @Autowired private ObjectMapper objectMapper;
@@ -71,7 +71,7 @@ public class UCSBAPIQuarterService {
 
       return quarter.getYYYYQ();
     } catch (Exception e) {
-        throw new RuntimeException("Unable to determine end quarter", e);
+      throw new RuntimeException("Unable to determine end quarter", e);
     }
   }
 
@@ -165,7 +165,7 @@ public class UCSBAPIQuarterService {
   }
 
   public boolean quarterYYYYQInRange(String quarterYYYYQ) throws Exception {
-    String endQtrYYYYQ = getEndQtrYYYYQ(); 
+    String endQtrYYYYQ = getEndQtrYYYYQ();
     boolean dateGEStart = quarterYYYYQ.compareTo(startQtrYYYYQ) >= 0;
     boolean dateLEEnd = quarterYYYYQ.compareTo(endQtrYYYYQ) <= 0;
     return (dateGEStart && dateLEEnd);
@@ -180,15 +180,15 @@ public class UCSBAPIQuarterService {
         savedQuarters.add(quarter);
       }
     }
-    
+
     /*quarters.forEach(
-        (quarter) -> {
-          if (quarterYYYYQInRange(quarter.getQuarter())) {
-            ucsbApiQuarterRepository.save(quarter);
-            savedQuarters.add(quarter);
-          }
-        });
-        */
+    (quarter) -> {
+      if (quarterYYYYQInRange(quarter.getQuarter())) {
+        ucsbApiQuarterRepository.save(quarter);
+        savedQuarters.add(quarter);
+      }
+    });
+    */
     log.info("savedQuarters.size={}", savedQuarters.size());
     return savedQuarters;
   }

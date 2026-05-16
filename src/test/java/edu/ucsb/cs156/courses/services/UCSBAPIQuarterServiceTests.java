@@ -33,7 +33,7 @@ import org.springframework.web.client.RestTemplate;
 @TestPropertySource(
     properties = {
       "app.startQtrYYYYQ=20211",
-      //"app.endQtrYYYYQ=20223",
+      // "app.endQtrYYYYQ=20223",
       "app.ucsb.api.consumer_key=fakeApiKey"
     })
 public class UCSBAPIQuarterServiceTests {
@@ -58,12 +58,12 @@ public class UCSBAPIQuarterServiceTests {
     String expectedJSON = objectMapper.writeValueAsString(sampleCurrent);
 
     this.mockRestServiceServer
-      .expect(requestTo(UCSBAPIQuarterService.CURRENT_QUARTER_ENDPOINT))
-      .andExpect(header("Accept", MediaType.APPLICATION_JSON.toString()))
-      .andExpect(header("Content-Type", MediaType.APPLICATION_JSON.toString()))
-      .andExpect(header("ucsb-api-version", "1.0"))
-      .andExpect(header("ucsb-api-key", apiKey))
-      .andRespond(withSuccess(expectedJSON, MediaType.APPLICATION_JSON));
+        .expect(requestTo(UCSBAPIQuarterService.CURRENT_QUARTER_ENDPOINT))
+        .andExpect(header("Accept", MediaType.APPLICATION_JSON.toString()))
+        .andExpect(header("Content-Type", MediaType.APPLICATION_JSON.toString()))
+        .andExpect(header("ucsb-api-version", "1.0"))
+        .andExpect(header("ucsb-api-key", apiKey))
+        .andRespond(withSuccess(expectedJSON, MediaType.APPLICATION_JSON));
   }
 
   @Test
@@ -283,7 +283,7 @@ public class UCSBAPIQuarterServiceTests {
         .andExpect(header("ucsb-api-version", "1.0"))
         .andExpect(header("ucsb-api-key", apiKey))
         .andRespond(withSuccess(expectedJSON, MediaType.APPLICATION_JSON));
-    
+
     expectCurrentQuarter("20211");
     expectCurrentQuarter("20211");
     expectCurrentQuarter("20211");
@@ -349,19 +349,19 @@ public class UCSBAPIQuarterServiceTests {
   }
 
   @Test
-  public void test_quarterYYYYQInRange_20204_false() throws Exception{
+  public void test_quarterYYYYQInRange_20204_false() throws Exception {
     expectCurrentQuarter("20222");
     assertEquals(false, service.quarterYYYYQInRange("20204"));
   }
 
   @Test
-  public void test_quarterYYYYQInRange_20224_true() throws Exception{
+  public void test_quarterYYYYQInRange_20224_true() throws Exception {
     expectCurrentQuarter("20222");
     assertEquals(true, service.quarterYYYYQInRange("20224"));
   }
 
   @Test
-  public void test_quarterYYYYQInRange_20231_false() throws Exception{
+  public void test_quarterYYYYQInRange_20231_false() throws Exception {
     expectCurrentQuarter("20222");
     assertEquals(false, service.quarterYYYYQInRange("20231"));
   }
@@ -585,7 +585,7 @@ public class UCSBAPIQuarterServiceTests {
         Mockito.mockStatic(LocalDateTime.class)) {
       mockedLocalDateTime.when(LocalDateTime::now).thenReturn(fixedDateTime);
 
-      //List<String> expectedResult = List.of("20212", "20213");
+      // List<String> expectedResult = List.of("20212", "20213");
       List<String> expectedResult = List.of("20212");
       List<String> actualResult = service.getActiveRegistrationQuarters();
 
