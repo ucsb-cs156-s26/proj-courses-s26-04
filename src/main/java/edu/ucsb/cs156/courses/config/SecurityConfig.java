@@ -51,8 +51,7 @@ public class SecurityConfig {
 
   @Autowired UserRepository userRepository;
 
-  @Autowired(required = false)
-  RateLimitFilter rateLimitFilter;
+  @Autowired RateLimitFilter rateLimitFilter;
 
   // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-javascript-spa
   @Bean
@@ -70,9 +69,7 @@ public class SecurityConfig {
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
-    if (rateLimitFilter != null) {
-      http.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+    http.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
     http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
         .logout(
             logout ->

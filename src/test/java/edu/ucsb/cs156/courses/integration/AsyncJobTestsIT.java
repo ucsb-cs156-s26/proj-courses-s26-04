@@ -7,17 +7,14 @@ import edu.ucsb.cs156.courses.entities.Job;
 import edu.ucsb.cs156.courses.repositories.JobsRepository;
 import edu.ucsb.cs156.courses.services.jobs.JobContextFactory;
 import edu.ucsb.cs156.courses.services.jobs.JobService;
-import edu.ucsb.cs156.courses.testconfig.TestConfig;
 import edu.ucsb.cs156.courses.testconfig.TestJob;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
-@Import(TestConfig.class)
 public class AsyncJobTestsIT {
 
   @Autowired private JobService jobService;
