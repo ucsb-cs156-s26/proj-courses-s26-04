@@ -89,6 +89,30 @@ describe("CourseOverTimeDescriptionSearchForm tests", () => {
       expect(searchTermsInput.value).toBe("algorithms");
     });
 
+    test("on submit, endQuarter is the system default string from useState initializer", async () => {
+      const fetchJSONSpy = vi.fn();
+      fetchJSONSpy.mockResolvedValue({});
+
+      render(
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <CourseOverTimeDescriptionSearchForm fetchJSON={fetchJSONSpy} />
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+
+      userEvent.type(screen.getByLabelText("Search terms"), "algorithms");
+      userEvent.click(screen.getByText("Submit"));
+
+      await waitFor(() => expect(fetchJSONSpy).toHaveBeenCalledTimes(1));
+
+      const payload = fetchJSONSpy.mock.calls[0][1];
+      expect(typeof payload.endQuarter).toBe("string");
+      expect(payload.endQuarter).toBe(
+        systemInfoFixtures.showingNeither.endQtrYYYYQ,
+      );
+    });
+
     test("when I select the checkbox, the state for checkbox changes", () => {
       vi.spyOn(Storage.prototype, "setItem");
 
