@@ -32,6 +32,8 @@ jobs:
          cache-dependency-path: 'pom.xml' 
 
     - name: Run IT tests with maven
+      env:
+        UCSB_API_KEY: ${{ secrets.UCSB_API_KEY }} 
       run: |
         INTEGRATION=true mvn -ntp -B test-compile failsafe:integration-test failsafe:verify
 

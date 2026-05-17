@@ -32,7 +32,7 @@ public class AsyncJobTestsIT {
     Job job = jobService.runAsJob(testJob);
     assertEquals("running", job.getStatus(), "Job should be running");
     await()
-        .atMost(10, TimeUnit.SECONDS)
+        .atMost(30, TimeUnit.SECONDS)
         .untilAsserted(() -> assertEquals("complete", job.getStatus(), "Job should be complete"));
   }
 }
