@@ -45,6 +45,53 @@ export const oneSection = [
   },
 ];
 
+export const oneSectionWithSession = [
+  {
+    courseInfo: {
+      quarter: "20221",
+      courseId: "ECE       1A -1",
+      title: "COMP ENGR SEMINAR",
+      description:
+        "Introductory seminar to expose students to a broad range of topics in computer   engineering.",
+    },
+    section: {
+      enrollCode: "12583",
+      section: "0100",
+      session: "20251A",
+      classClosed: null,
+      courseCancelled: null,
+      gradingOptionCode: null,
+      enrolledTotal: 84,
+      maxEnroll: 100,
+      secondaryStatus: null,
+      departmentApprovalRequired: false,
+      instructorApprovalRequired: false,
+      restrictionLevel: null,
+      restrictionMajor: "+PRCME+CMPEN",
+      restrictionMajorPass: null,
+      restrictionMinor: null,
+      restrictionMinorPass: null,
+      concurrentCourses: [],
+      timeLocations: [
+        {
+          room: "1930",
+          building: "BUCHN",
+          roomCapacity: "100",
+          days: "M      ",
+          beginTime: "15:00",
+          endTime: "15:50",
+        },
+      ],
+      instructors: [
+        {
+          instructor: "WANG L C",
+          functionCode: "Teaching and in charge",
+        },
+      ],
+    },
+  },
+];
+
 export const oneLectureSectionWithNoDiscussion = [
   {
     courseInfo: {
