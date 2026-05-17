@@ -24,8 +24,6 @@ vi.mock("main/utils/systemInfo", () => ({
   useSystemInfo: vi.fn(),
 }));
 
-// import { useSystemInfo } from "main/utils/systemInfo";
-
 describe("CourseOverTimeDescriptionSearchForm tests", () => {
   describe("CourseOverTimeDescriptionSearchForm basic tests", () => {
     const axiosMock = new AxiosMockAdapter(axios);

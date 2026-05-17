@@ -33,7 +33,6 @@ const CourseOverTimeDescriptionSearchForm = ({ fetchJSON }) => {
     localStartQuarter || firstQtr,
   );
 
-  // Stryker disable next-line all : TODO: write a good test for this or refactor
   const [endQuarter, setEndQuarter] = useState(localEndQuarter || lastQtr);
 
   const [searchTerms, setSearchTerms] = useState(localSearchTerms || "");
