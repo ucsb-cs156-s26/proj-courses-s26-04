@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
@@ -112,13 +113,21 @@ public class UCSBAPIQuarterServiceTests {
   }
 
   @Test
-  public void test_getEndQtrYYYYQ_throws_runtime_exception_when_current_quarter_api_fails() {
-    this.mockRestServiceServer
-        .expect(requestTo(UCSBAPIQuarterService.CURRENT_QUARTER_ENDPOINT))
-        .andRespond(withServerError());
+  public void test_getEndQtrYYYYQ_when_current_quarter_api_fails() {
+    mockRestServiceServer
+      .expect(requestTo(UCSBAPIQuarterService.CURRENT_QUARTER_ENDPOINT))
+      .andRespond(withServerError());
 
-    assertThrows(RuntimeException.class, () -> service.getEndQtrYYYYQ());
+    RuntimeException ex = assertThrows(RuntimeException.class, () -> service.getEndQtrYYYYQ());
+
+    assertEquals("Unable to determine end quarter", ex.getMessage());
   }
+
+  @Test
+  public void test_getActiveQuarters_returns_empty_when_current_after_end() {
+    List<String> actualResult = service.getActiveQuarters("20224", "20223");
+    assertEquals(List.of(), actualResult);
+}
 
   @Test
   public void test_getCurrentQuarterYYYYQ() throws Exception {

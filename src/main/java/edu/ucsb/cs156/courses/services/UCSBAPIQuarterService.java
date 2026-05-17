@@ -208,6 +208,17 @@ public class UCSBAPIQuarterService {
     return activeQuarters;
   }
 
+  public List<String> getActiveQuarters(String currQtr, String endQtr) {
+    List<String> activeQuarters = new ArrayList<>();
+
+    if (currQtr.compareTo(endQtr) <= 0) {
+      Quarter.quarterList(currQtr, endQtr)
+        .forEach(quarter -> activeQuarters.add(quarter.getYYYYQ()));
+    }
+
+    return activeQuarters;
+  }
+
   public LocalDateTime lastDayToRegister(UCSBAPIQuarter ucsbApiQuarter) {
     if (ucsbApiQuarter == null) {
       return null;
