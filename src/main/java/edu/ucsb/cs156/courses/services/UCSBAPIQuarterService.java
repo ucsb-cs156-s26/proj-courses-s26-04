@@ -31,6 +31,7 @@ public class UCSBAPIQuarterService {
   private String startQtrYYYYQ;
 
   // @Value("${app.endQtrYYYYQ:20222}")
+  @Value("${app.endQtrYYYYQ:}")
   private String endQtrYYYYQ;
 
   @Autowired private ObjectMapper objectMapper;
