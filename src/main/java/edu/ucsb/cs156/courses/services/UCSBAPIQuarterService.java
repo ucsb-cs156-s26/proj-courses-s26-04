@@ -30,7 +30,8 @@ public class UCSBAPIQuarterService {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  @Value("${app.endQtrYYYYQ:20222}")
+  // @Value("${app.endQtrYYYYQ:20222}")
+  @Value("${app.endQtrYYYYQ:}")
   private String endQtrYYYYQ;
 
   @Autowired private ObjectMapper objectMapper;
@@ -59,8 +60,22 @@ public class UCSBAPIQuarterService {
     return startQtrYYYYQ;
   }
 
+  public String getEndQtrYYYYQ(String currentQuarter) {
+    Quarter quarter = new Quarter(currentQuarter);
+    quarter.increment();
+
+    if (quarter.getQ().equals("M")) {
+      quarter.increment();
+    }
+    return quarter.getYYYYQ();
+  }
+
   public String getEndQtrYYYYQ() {
-    return endQtrYYYYQ;
+    try {
+      return getEndQtrYYYYQ(getCurrentQuarterYYYYQ());
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to determine end quarter", e);
+    }
   }
 
   public String getCurrentQuarterYYYYQ() throws Exception {
@@ -152,7 +167,8 @@ public class UCSBAPIQuarterService {
     return quarters;
   }
 
-  public boolean quarterYYYYQInRange(String quarterYYYYQ) {
+  public boolean quarterYYYYQInRange(String quarterYYYYQ) throws Exception {
+    String endQtrYYYYQ = getEndQtrYYYYQ();
     boolean dateGEStart = quarterYYYYQ.compareTo(startQtrYYYYQ) >= 0;
     boolean dateLEEnd = quarterYYYYQ.compareTo(endQtrYYYYQ) <= 0;
     return (dateGEStart && dateLEEnd);
@@ -161,21 +177,34 @@ public class UCSBAPIQuarterService {
   public List<UCSBAPIQuarter> loadAllQuarters() throws Exception {
     List<UCSBAPIQuarter> quarters = this.getAllQuartersFromAPI();
     List<UCSBAPIQuarter> savedQuarters = new ArrayList<UCSBAPIQuarter>();
-    quarters.forEach(
-        (quarter) -> {
-          if (quarterYYYYQInRange(quarter.getQuarter())) {
-            ucsbApiQuarterRepository.save(quarter);
-            savedQuarters.add(quarter);
-          }
-        });
+    for (UCSBAPIQuarter quarter : quarters) {
+      if (quarterYYYYQInRange(quarter.getQuarter())) {
+        ucsbApiQuarterRepository.save(quarter);
+        savedQuarters.add(quarter);
+      }
+    }
+
+    /*quarters.forEach(
+    (quarter) -> {
+      if (quarterYYYYQInRange(quarter.getQuarter())) {
+        ucsbApiQuarterRepository.save(quarter);
+        savedQuarters.add(quarter);
+      }
+    });
+    */
     log.info("savedQuarters.size={}", savedQuarters.size());
     return savedQuarters;
   }
 
   public List<String> getActiveQuarters() throws Exception {
-    List<String> activeQuarters = new ArrayList<>();
     String currQtr = getCurrentQuarterYYYYQ();
     String endQtr = getEndQtrYYYYQ();
+
+    return getActiveQuarters(currQtr, endQtr);
+  }
+
+  public List<String> getActiveQuarters(String currQtr, String endQtr) {
+    List<String> activeQuarters = new ArrayList<>();
 
     if (currQtr.compareTo(endQtr) <= 0) {
       Quarter.quarterList(currQtr, endQtr)
