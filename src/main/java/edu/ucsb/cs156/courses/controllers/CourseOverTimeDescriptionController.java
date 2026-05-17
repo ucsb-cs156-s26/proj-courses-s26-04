@@ -21,7 +21,9 @@ public class CourseOverTimeDescriptionController {
   private ObjectMapper mapper = new ObjectMapper();
 
   @Autowired ConvertedSectionCollection convertedSectionCollection;
-  @Operation(summary = "Get a list of courses over time, filtered by course description search terms")
+
+  @Operation(
+      summary = "Get a list of courses over time, filtered by course description search terms")
   @GetMapping(value = "/descriptionsearch", produces = "application/json")
   public ResponseEntity<String> search(
       @Parameter(
@@ -58,9 +60,13 @@ public class CourseOverTimeDescriptionController {
       throws JsonProcessingException {
     List<ConvertedSection> courseResults;
     if (lectureOnly) {
-      courseResults = convertedSectionCollection.findBySearchTermsAndQuarterRange(searchTerms, startQtr, endQtr, "^(Lecture)");
+      courseResults =
+          convertedSectionCollection.findBySearchTermsAndQuarterRange(
+              searchTerms, startQtr, endQtr, "^(Lecture)");
     } else {
-      courseResults = convertedSectionCollection.findBySearchTermsAndQuarterRange(searchTerms, startQtr, endQtr, "^.*");
+      courseResults =
+          convertedSectionCollection.findBySearchTermsAndQuarterRange(
+              searchTerms, startQtr, endQtr, "^.*");
     }
     courseResults.sort(new ConvertedSection.ConvertedSectionSortDescendingByQuarterComparator());
     String body = mapper.writeValueAsString(courseResults);

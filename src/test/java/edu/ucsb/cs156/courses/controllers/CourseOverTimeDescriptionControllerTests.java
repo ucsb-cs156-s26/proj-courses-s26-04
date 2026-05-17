@@ -42,7 +42,8 @@ public class CourseOverTimeDescriptionControllerTests {
     String urlTemplate =
         "/api/public/courseovertime/descriptionsearch?searchTerms=%s&startQtr=%s&endQtr=%s&lectureOnly=%s";
 
-    String url = String.format(urlTemplate, "Intro to object oriented design", "20222", "20212", "false");
+    String url =
+        String.format(urlTemplate, "Intro to object oriented design", "20222", "20212", "false");
 
     // mock
     when(convertedSectionCollection.findBySearchTermsAndQuarterRange(
@@ -84,7 +85,8 @@ public class CourseOverTimeDescriptionControllerTests {
     String urlTemplate =
         "/api/public/courseovertime/descriptionsearch?searchTerms=%s&startQtr=%s&endQtr=%s&lectureOnly=%s";
 
-    String url = String.format(urlTemplate, "Intro to object oriented design", "20222", "20222", "true");
+    String url =
+        String.format(urlTemplate, "Intro to object oriented design", "20222", "20222", "true");
 
     List<ConvertedSection> expectedSecs = new ArrayList<ConvertedSection>();
     expectedSecs.addAll(Arrays.asList(cs1, cs2));
@@ -126,7 +128,8 @@ public class CourseOverTimeDescriptionControllerTests {
     String urlTemplate =
         "/api/public/courseovertime/descriptionsearch?searchTerms=%s&startQtr=%s&endQtr=%s&lectureOnly=%s";
 
-    String url = String.format(urlTemplate, "Intro to object oriented design", "20222", "20222", "false");
+    String url =
+        String.format(urlTemplate, "Intro to object oriented design", "20222", "20222", "false");
 
     List<ConvertedSection> expectedSecs = new ArrayList<ConvertedSection>();
     expectedSecs.addAll(Arrays.asList(cs1, cs2));
@@ -141,10 +144,7 @@ public class CourseOverTimeDescriptionControllerTests {
 
     // mock
     when(convertedSectionCollection.findBySearchTermsAndQuarterRange(
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            eq("^.*")))
+            any(String.class), any(String.class), any(String.class), eq("^.*")))
         .thenReturn(expectedSecsOutOfOrder); // as they would be returned from the database
 
     // act

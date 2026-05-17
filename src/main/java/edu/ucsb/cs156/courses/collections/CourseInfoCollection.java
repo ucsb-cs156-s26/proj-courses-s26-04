@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseInfoCollection extends MongoRepository<CourseInfo, ObjectId> {
-    /**
+  /**
    * Find courses by quarter and search terms.
    *
    * @param searchTerms search terms for the course description or title
@@ -17,7 +17,8 @@ public interface CourseInfoCollection extends MongoRepository<CourseInfo, Object
    * @param endQuarter ending quarter in yyyyq format
    * @return
    */
-  @Query("{'$or': [{'description': { $regex: ?0, $options: 'i' } }, {'title': { $regex: ?0, $options: 'i' } }], 'quarter': { $gte: ?1, $lte: ?2 } }")
+  @Query(
+      "{'$or': [{'description': { $regex: ?0, $options: 'i' } }, {'title': { $regex: ?0, $options: 'i' } }], 'quarter': { $gte: ?1, $lte: ?2 } }")
   List<CourseInfo> findBySearchTermsAndQuarterRange(
-    String searchTerms, String startQuarter, String endQuarter);
+      String searchTerms, String startQuarter, String endQuarter);
 }

@@ -22,9 +22,10 @@ public interface ConvertedSectionCollection extends MongoRepository<ConvertedSec
   List<ConvertedSection> findByQuarterRangeAndInstructor(
       String startQuarter, String endQuarter, String instructor, String functionCode);
 
-  @Query("{'$or': [{'courseInfo.description': { $regex: ?0, $options: 'i' } }, {'courseInfo.title': { $regex: ?0, $options: 'i' } }], 'courseInfo.quarter': { $gte: ?1, $lte: ?2 }, 'section.section': { $regex: ?3 } }")
+  @Query(
+      "{'$or': [{'courseInfo.description': { $regex: ?0, $options: 'i' } }, {'courseInfo.title': { $regex: ?0, $options: 'i' } }], 'courseInfo.quarter': { $gte: ?1, $lte: ?2 }, 'section.section': { $regex: ?3 } }")
   List<ConvertedSection> findBySearchTermsAndQuarterRange(
-    String searchTerms, String startQuarter, String endQuarter, String sectionRegex);
+      String searchTerms, String startQuarter, String endQuarter, String sectionRegex);
 
   @Query(
       "{'courseInfo.quarter': { $gte: ?0, $lte: ?1 }, 'section.timeLocations.building': { $regex: ?2, $options: 'i' } }")
