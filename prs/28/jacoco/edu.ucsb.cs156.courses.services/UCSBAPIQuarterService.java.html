@@ -213,7 +213,7 @@ public class UCSBAPIQuarterService {
 
 <span class="pc bpc" id="L214" title="1 of 2 branches missed.">    if (currQtr.compareTo(endQtr) &lt;= 0) {</span>
 <span class="nc" id="L215">      Quarter.quarterList(currQtr, endQtr)</span>
-<span class="nc" id="L216">        .forEach(quarter -&gt; activeQuarters.add(quarter.getYYYYQ()));</span>
+<span class="nc" id="L216">          .forEach(quarter -&gt; activeQuarters.add(quarter.getYYYYQ()));</span>
     }
 
 <span class="fc" id="L219">    return activeQuarters;</span>
