@@ -129,6 +129,12 @@ public class UCSBAPIQuarterServiceTests {
   }
 
   @Test
+  public void test_getActiveQuarters_with_params_returns_list_when_current_before_end() {
+    List<String> actualResult = service.getActiveQuarters("20222", "20224");
+    assertEquals(List.of("20222", "20223", "20224"), actualResult);
+  }
+
+  @Test
   public void test_getCurrentQuarterYYYYQ() throws Exception {
     String expectedURL = UCSBAPIQuarterService.CURRENT_QUARTER_ENDPOINT;
 

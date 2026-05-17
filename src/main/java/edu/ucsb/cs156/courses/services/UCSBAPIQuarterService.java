@@ -196,16 +196,10 @@ public class UCSBAPIQuarterService {
   }
 
   public List<String> getActiveQuarters() throws Exception {
-    List<String> activeQuarters = new ArrayList<>();
     String currQtr = getCurrentQuarterYYYYQ();
     String endQtr = getEndQtrYYYYQ();
 
-    if (currQtr.compareTo(endQtr) <= 0) {
-      Quarter.quarterList(currQtr, endQtr)
-          .forEach(quarter -> activeQuarters.add(quarter.getYYYYQ()));
-    }
-
-    return activeQuarters;
+    return getActiveQuarters(currQtr, endQtr);
   }
 
   public List<String> getActiveQuarters(String currQtr, String endQtr) {
