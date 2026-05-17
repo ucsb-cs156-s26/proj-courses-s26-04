@@ -1,12 +1,14 @@
 package edu.ucsb.cs156.courses.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -87,6 +89,35 @@ public class UCSBAPIQuarterServiceTests {
         .andRespond(withSuccess(expectedJSON, MediaType.APPLICATION_JSON));
 
     assertEquals("20212", service.getEndQtrYYYYQ());
+  }
+
+  @Test
+  public void test_getEndQtrYYYYQ_given_winter() {
+    assertEquals("20212", service.getEndQtrYYYYQ("20211"));
+  }
+
+  @Test
+  public void test_getEndQtrYYYYQ_given_spring() {
+    assertEquals("20224", service.getEndQtrYYYYQ("20222"));
+  }
+
+  @Test
+  public void test_getEndQtrYYYYQ_given_summer() {
+    assertEquals("20224", service.getEndQtrYYYYQ("20223"));
+  }
+
+  @Test
+  public void test_getEndQtrYYYYQ_given_fall() {
+    assertEquals("20231", service.getEndQtrYYYYQ("20224"));
+  }
+
+  @Test
+  public void test_getEndQtrYYYYQ_throws_runtime_exception_when_current_quarter_api_fails() {
+    this.mockRestServiceServer
+        .expect(requestTo(UCSBAPIQuarterService.CURRENT_QUARTER_ENDPOINT))
+        .andRespond(withServerError());
+
+    assertThrows(RuntimeException.class, () -> service.getEndQtrYYYYQ());
   }
 
   @Test

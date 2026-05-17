@@ -59,17 +59,19 @@ public class UCSBAPIQuarterService {
     return startQtrYYYYQ;
   }
 
+  public String getEndQtrYYYYQ(String currentQuarter) {
+    Quarter quarter = new Quarter(currentQuarter);
+    quarter.increment();
+
+    if (quarter.getQ().equals("M")) {
+      quarter.increment();
+    }
+    return quarter.getYYYYQ();
+  }
+
   public String getEndQtrYYYYQ() {
     try {
-      String currentQuarter = getCurrentQuarterYYYYQ();
-      Quarter quarter = new Quarter(currentQuarter);
-      quarter.increment();
-
-      if (quarter.getQ().equals("M")) {
-        quarter.increment();
-      }
-
-      return quarter.getYYYYQ();
+      return getEndQtrYYYYQ(getCurrentQuarterYYYYQ());
     } catch (Exception e) {
       throw new RuntimeException("Unable to determine end quarter", e);
     }
