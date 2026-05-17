@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 <span class="fc" id="L21">  private ObjectMapper mapper = new ObjectMapper();</span>
 
   @Autowired ConvertedSectionCollection convertedSectionCollection;
-  @Operation(summary = &quot;Get a list of courses over time, filtered by course description search terms&quot;)
+
+  @Operation(
+      summary = &quot;Get a list of courses over time, filtered by course description search terms&quot;)
   @GetMapping(value = &quot;/descriptionsearch&quot;, produces = &quot;application/json&quot;)
   public ResponseEntity&lt;String&gt; search(
       @Parameter(
@@ -57,14 +59,18 @@ import org.springframework.web.bind.annotation.RestController;
           boolean lectureOnly)
       throws JsonProcessingException {
     List&lt;ConvertedSection&gt; courseResults;
-<span class="fc bfc" id="L60" title="All 2 branches covered.">    if (lectureOnly) {</span>
-<span class="fc" id="L61">      courseResults = convertedSectionCollection.findBySearchTermsAndQuarterRange(searchTerms, startQtr, endQtr, &quot;^(Lecture)&quot;);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">    if (lectureOnly) {</span>
+<span class="fc" id="L63">      courseResults =</span>
+<span class="fc" id="L64">          convertedSectionCollection.findBySearchTermsAndQuarterRange(</span>
+              searchTerms, startQtr, endQtr, &quot;^(Lecture)&quot;);
     } else {
-<span class="fc" id="L63">      courseResults = convertedSectionCollection.findBySearchTermsAndQuarterRange(searchTerms, startQtr, endQtr, &quot;^.*&quot;);</span>
+<span class="fc" id="L67">      courseResults =</span>
+<span class="fc" id="L68">          convertedSectionCollection.findBySearchTermsAndQuarterRange(</span>
+              searchTerms, startQtr, endQtr, &quot;^.*&quot;);
     }
-<span class="fc" id="L65">    courseResults.sort(new ConvertedSection.ConvertedSectionSortDescendingByQuarterComparator());</span>
-<span class="fc" id="L66">    String body = mapper.writeValueAsString(courseResults);</span>
-<span class="fc" id="L67">    return ResponseEntity.ok().body(body);</span>
+<span class="fc" id="L71">    courseResults.sort(new ConvertedSection.ConvertedSectionSortDescendingByQuarterComparator());</span>
+<span class="fc" id="L72">    String body = mapper.writeValueAsString(courseResults);</span>
+<span class="fc" id="L73">    return ResponseEntity.ok().body(body);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
