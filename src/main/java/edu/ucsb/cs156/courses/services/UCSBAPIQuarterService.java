@@ -213,7 +213,7 @@ public class UCSBAPIQuarterService {
 
     if (currQtr.compareTo(endQtr) <= 0) {
       Quarter.quarterList(currQtr, endQtr)
-        .forEach(quarter -> activeQuarters.add(quarter.getYYYYQ()));
+          .forEach(quarter -> activeQuarters.add(quarter.getYYYYQ()));
     }
 
     return activeQuarters;
