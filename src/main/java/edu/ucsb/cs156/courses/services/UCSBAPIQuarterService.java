@@ -30,7 +30,6 @@ public class UCSBAPIQuarterService {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  // @Value("${app.endQtrYYYYQ:20222}")
   @Value("${app.endQtrYYYYQ:}")
   private String endQtrYYYYQ;
 

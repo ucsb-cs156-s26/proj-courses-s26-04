@@ -33,9 +33,6 @@ public class ScheduledJobs {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  // @Value("${app.endQtrYYYYQ:20222}")
-  // private String endQtrYYYYQ;
-
   @Scheduled(cron = "${app.updateCourseData.cron}", zone = "${spring.jackson.time-zone}")
   public void runUpdateCourseDataBasedOnCron() throws Exception {
     log.info("runUpdateCourseDataBasedOnCron: running");

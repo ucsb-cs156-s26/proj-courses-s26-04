@@ -25,8 +25,6 @@ public class CoursesStartup {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  // @Value("${app.endQtrYYYYQ:20222}")
-  // private String endQtrYYYYQ;
 
   /**
    * Called once at application startup time . Put code here if you want it to run once each time

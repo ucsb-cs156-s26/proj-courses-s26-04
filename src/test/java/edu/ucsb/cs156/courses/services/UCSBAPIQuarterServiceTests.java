@@ -222,9 +222,6 @@ public class UCSBAPIQuarterServiceTests {
         .andExpect(header("ucsb-api-key", apiKey))
         .andRespond(withSuccess(expectedJSON, MediaType.APPLICATION_JSON));
 
-    /*List<String> expectedResult =
-        List.of("20211", "20212", "20213", "20214", "20221", "20222", "20223");
-    */
     List<String> expectedResult = List.of("20211", "20212");
     List<String> actualResult = service.getActiveQuarters();
 
@@ -366,9 +363,6 @@ public class UCSBAPIQuarterServiceTests {
         .andExpect(header("ucsb-api-key", apiKey))
         .andRespond(withSuccess(expectedJSON, MediaType.APPLICATION_JSON));
 
-    /*List<String> expectedResult =
-        List.of("20211", "20212", "20213", "20214", "20221", "20222", "20223");
-    */
     List<String> expectedResult = List.of("20211", "20212");
     List<String> actualResult = service.getActiveQuarterList();
 
