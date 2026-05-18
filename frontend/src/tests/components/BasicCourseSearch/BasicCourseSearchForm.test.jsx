@@ -191,8 +191,9 @@ describe("BasicCourseSearchForm tests", () => {
       endQtrYYYYQ: null, // use fallback value
     });
 
+    const freshQueryClient = new QueryClient();
     render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={freshQueryClient}>
         <MemoryRouter>
           <BasicCourseSearchForm />
         </MemoryRouter>

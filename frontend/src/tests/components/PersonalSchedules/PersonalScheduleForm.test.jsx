@@ -19,6 +19,9 @@ vi.mock("react-router-dom", async () => ({
 
 describe("PersonalScheduleForm tests", () => {
   const axiosMock = new AxiosMockAdapter(axios);
+
+  const queryClient = new QueryClient();
+
   beforeEach(() => {
     axiosMock.onGet("/api/systemInfo").reply(200, {
       springH2ConsoleEnabled: false,
@@ -27,8 +30,6 @@ describe("PersonalScheduleForm tests", () => {
       endQtrYYYYQ: "20244",
     });
   });
-
-  const queryClient = new QueryClient();
 
   test("renders correctly", async () => {
     render(
@@ -146,8 +147,9 @@ describe("PersonalScheduleForm tests", () => {
       endQtrYYYYQ: null, // use fallback value
     });
 
+    const freshQueryClient = new QueryClient();
     render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={freshQueryClient}>
         <Router>
           <PersonalScheduleForm submitAction={mockSubmitAction} />
         </Router>

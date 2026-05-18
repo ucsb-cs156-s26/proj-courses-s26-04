@@ -50,9 +50,10 @@ describe("AdminUpdatesPage tests", () => {
     getItemSpy.mockImplementation(() => null);
     const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
 
+    const freshQueryClient = new QueryClient();
     // act
     render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={freshQueryClient}>
         <MemoryRouter>
           <AdminUpdatesPage />
         </MemoryRouter>

@@ -14,13 +14,13 @@ export function useSystemInfo() {
       }
     },
     {
-      initialData: {
-        initialData: true,
+      placeholderData: {
         springH2ConsoleEnabled: false,
         showSwaggerUILink: false,
         startQtrYYYYQ: "20221",
         endQtrYYYYQ: "20222",
       },
+      staleTime: Infinity,
     },
   );
 }
