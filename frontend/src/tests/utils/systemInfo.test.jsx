@@ -76,7 +76,7 @@ describe("utils/systemInfo tests", () => {
       queryClient.clear();
     });
 
-    test("useSystemInfo does not refetch when data is already cached (staleTime is Infinity)", async () => {
+    test("useSystemInfo does not refetch when data is already cached (within staleTime)", async () => {
       const wrapper = ({ children }) => (
         <QueryClientProvider client={queryClient}>
           {children}

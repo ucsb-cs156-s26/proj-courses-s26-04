@@ -20,7 +20,7 @@ export function useSystemInfo() {
         startQtrYYYYQ: "20221",
         endQtrYYYYQ: "20222",
       },
-      staleTime: Infinity,
+      staleTime: 60000,
     },
   );
 }
