@@ -25,7 +25,6 @@ public class CoursesStartup {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-
   /**
    * Called once at application startup time . Put code here if you want it to run once each time
    * the Spring Boot application starts up in all environments.
