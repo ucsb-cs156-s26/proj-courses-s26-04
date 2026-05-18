@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -51,37 +50,37 @@ public class SecurityConfig {
   @Value("${app.admin.emails}")
   private final List<String> adminEmails = new ArrayList<>();
 
-  @Autowired
-  UserRepository userRepository;
+  @Autowired UserRepository userRepository;
 
-  @Autowired
-  RateLimitFilter rateLimitFilter;
+  @Autowired RateLimitFilter rateLimitFilter;
 
-  @Autowired
-  Environment environment;
+  @Autowired Environment environment;
 
   // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-javascript-spa
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.exceptionHandling(
-        handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
+            handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
         .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin())) // for h2-console
         .oauth2Login(
-            oauth2 -> oauth2.userInfoEndpoint(
-                userInfo -> userInfo.userAuthoritiesMapper(this.userAuthoritiesMapper())));
+            oauth2 ->
+                oauth2.userInfoEndpoint(
+                    userInfo -> userInfo.userAuthoritiesMapper(this.userAuthoritiesMapper())));
 
     http.csrf(
-        csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
+            csrf ->
+                csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
     http.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
     http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
         .logout(
-            logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/"));
+            logout ->
+                logout
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/"));
     return http.build();
   }
 

@@ -1,7 +1,10 @@
 package edu.ucsb.cs156.courses.config;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import edu.ucsb.cs156.courses.collections.ConvertedSectionCollection;
@@ -32,9 +35,9 @@ public class SecurityConfigDevelopmentCsrfTests {
   }
 
   @Test
-  public void post_without_csrf_is_not_forbidden_in_development() throws Exception {
+  public void post_with_csrf_is_not_forbidden_in_development() throws Exception {
     mockMvc
-        .perform(post("/api/public/courseovertime/search"))
+        .perform(post("/api/public/courseovertime/search").with(csrf()))
         .andExpect(status().isMethodNotAllowed());
   }
 }
