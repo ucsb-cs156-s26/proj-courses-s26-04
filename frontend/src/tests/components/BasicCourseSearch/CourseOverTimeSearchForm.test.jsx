@@ -28,7 +28,6 @@ describe("CourseOverTimeSearchForm tests", () => {
       axiosMock = new AxiosMockAdapter(axios);
       vi.clearAllMocks();
       vi.spyOn(console, "error").mockImplementation(() => null);
-      queryClient.clear();
 
       axiosMock
         .onGet("/api/currentUser")
@@ -502,6 +501,7 @@ describe("CourseOverTimeSearchForm tests", () => {
       getItemSpy.mockImplementation(() => null);
       setItemSpy.mockImplementation(() => null);
 
+      queryClient.clear();
       axiosMock.onGet("/api/systemInfo").reply(200, {
         springH2ConsoleEnabled: false,
         showSwaggerUILink: false,

@@ -20,7 +20,6 @@ describe("AdminUpdatesPage tests", () => {
     vi.clearAllMocks();
     axiosMock.reset();
     axiosMock.resetHistory();
-    queryClient.clear();
     axiosMock
       .onGet("/api/systemInfo")
       .reply(200, systemInfoFixtures.showingNeither);
@@ -52,6 +51,7 @@ describe("AdminUpdatesPage tests", () => {
     getItemSpy.mockImplementation(() => null);
     const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
 
+    queryClient.clear();
     // act
     render(
       <QueryClientProvider client={queryClient}>

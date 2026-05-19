@@ -23,7 +23,6 @@ describe("PersonalScheduleForm tests", () => {
   const queryClient = new QueryClient();
 
   beforeEach(() => {
-    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       springH2ConsoleEnabled: false,
       showSwaggerUILink: false,
@@ -141,6 +140,7 @@ describe("PersonalScheduleForm tests", () => {
   test("Fallback hardcoded values for startQtr and endQtr work when systemInfo doesn't provide any", async () => {
     const mockSubmitAction = vi.fn();
 
+    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       springH2ConsoleEnabled: false,
       showSwaggerUILink: false,

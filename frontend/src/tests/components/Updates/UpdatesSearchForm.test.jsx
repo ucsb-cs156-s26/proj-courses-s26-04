@@ -26,7 +26,6 @@ describe("UpdatesSearchForm tests", () => {
     vi.clearAllMocks();
     vi.spyOn(console, "error");
     console.error.mockImplementation(() => null);
-    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       ...systemInfoFixtures.showingNeither,
       startQtrYYYYQ: "20201",
@@ -198,6 +197,7 @@ describe("UpdatesSearchForm tests", () => {
     getItemSpy.mockImplementation(() => null);
     const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
 
+    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       springH2ConsoleEnabled: false,
       showSwaggerUILink: false,

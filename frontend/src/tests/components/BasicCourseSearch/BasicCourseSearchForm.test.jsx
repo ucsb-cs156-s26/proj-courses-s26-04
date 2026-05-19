@@ -28,7 +28,6 @@ describe("BasicCourseSearchForm tests", () => {
     vi.clearAllMocks();
     vi.spyOn(console, "error");
     console.error.mockImplementation(() => null);
-    queryClient.clear();
 
     axiosMock
       .onGet("/api/currentUser")
@@ -185,6 +184,7 @@ describe("BasicCourseSearchForm tests", () => {
   });
 
   test("renders without crashing when fallback values are used", async () => {
+    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       springH2ConsoleEnabled: false,
       showSwaggerUILink: false,
