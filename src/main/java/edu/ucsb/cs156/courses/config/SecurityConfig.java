@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -54,8 +53,6 @@ public class SecurityConfig {
 
   @Autowired RateLimitFilter rateLimitFilter;
 
-  @Autowired Environment environment;
-
   // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-javascript-spa
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -65,15 +62,13 @@ public class SecurityConfig {
         .oauth2Login(
             oauth2 ->
                 oauth2.userInfoEndpoint(
-                    userInfo -> userInfo.userAuthoritiesMapper(this.userAuthoritiesMapper())));
-
-    http.csrf(
+                    userInfo -> userInfo.userAuthoritiesMapper(this.userAuthoritiesMapper())))
+        .csrf(
             csrf ->
                 csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
-
     http.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
     http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
         .logout(
