@@ -182,83 +182,74 @@ public class UCSBAPIQuarterService {
 <span class="fc" id="L182">        savedQuarters.add(quarter);</span>
       }
 <span class="fc" id="L184">    }</span>
-
-    /*quarters.forEach(
-    (quarter) -&gt; {
-      if (quarterYYYYQInRange(quarter.getQuarter())) {
-        ucsbApiQuarterRepository.save(quarter);
-        savedQuarters.add(quarter);
-      }
-    });
-    */
-<span class="fc" id="L194">    log.info(&quot;savedQuarters.size={}&quot;, savedQuarters.size());</span>
-<span class="fc" id="L195">    return savedQuarters;</span>
+<span class="fc" id="L185">    log.info(&quot;savedQuarters.size={}&quot;, savedQuarters.size());</span>
+<span class="fc" id="L186">    return savedQuarters;</span>
   }
 
   public List&lt;String&gt; getActiveQuarters() throws Exception {
-<span class="fc" id="L199">    String currQtr = getCurrentQuarterYYYYQ();</span>
-<span class="fc" id="L200">    String endQtr = getEndQtrYYYYQ();</span>
+<span class="fc" id="L190">    String currQtr = getCurrentQuarterYYYYQ();</span>
+<span class="fc" id="L191">    String endQtr = getEndQtrYYYYQ();</span>
 
-<span class="fc" id="L202">    return getActiveQuarters(currQtr, endQtr);</span>
+<span class="fc" id="L193">    return getActiveQuarters(currQtr, endQtr);</span>
   }
 
   public List&lt;String&gt; getActiveQuarters(String currQtr, String endQtr) {
-<span class="fc" id="L206">    List&lt;String&gt; activeQuarters = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L197">    List&lt;String&gt; activeQuarters = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L208" title="All 2 branches covered.">    if (currQtr.compareTo(endQtr) &lt;= 0) {</span>
-<span class="fc" id="L209">      Quarter.quarterList(currQtr, endQtr)</span>
-<span class="fc" id="L210">          .forEach(quarter -&gt; activeQuarters.add(quarter.getYYYYQ()));</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">    if (currQtr.compareTo(endQtr) &lt;= 0) {</span>
+<span class="fc" id="L200">      Quarter.quarterList(currQtr, endQtr)</span>
+<span class="fc" id="L201">          .forEach(quarter -&gt; activeQuarters.add(quarter.getYYYYQ()));</span>
     }
 
-<span class="fc" id="L213">    return activeQuarters;</span>
+<span class="fc" id="L204">    return activeQuarters;</span>
   }
 
   public LocalDateTime lastDayToRegister(UCSBAPIQuarter ucsbApiQuarter) {
-<span class="fc bfc" id="L217" title="All 2 branches covered.">    if (ucsbApiQuarter == null) {</span>
-<span class="fc" id="L218">      return null;</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">    if (ucsbApiQuarter == null) {</span>
+<span class="fc" id="L209">      return null;</span>
     }
 
-<span class="fc" id="L221">    LocalDateTime lastDayToAddUndergrad = ucsbApiQuarter.getLastDayToAddUnderGrad();</span>
-<span class="fc" id="L222">    LocalDateTime lastDayToAddGrad = ucsbApiQuarter.getLastDayToAddGrad();</span>
+<span class="fc" id="L212">    LocalDateTime lastDayToAddUndergrad = ucsbApiQuarter.getLastDayToAddUnderGrad();</span>
+<span class="fc" id="L213">    LocalDateTime lastDayToAddGrad = ucsbApiQuarter.getLastDayToAddGrad();</span>
 
-<span class="fc bfc" id="L224" title="All 4 branches covered.">    if (lastDayToAddUndergrad == null || lastDayToAddGrad == null) {</span>
-<span class="fc" id="L225">      return null;</span>
+<span class="fc bfc" id="L215" title="All 4 branches covered.">    if (lastDayToAddUndergrad == null || lastDayToAddGrad == null) {</span>
+<span class="fc" id="L216">      return null;</span>
     }
 
-<span class="fc bfc" id="L228" title="All 2 branches covered.">    return lastDayToAddUndergrad.isAfter(lastDayToAddGrad)</span>
-<span class="fc" id="L229">        ? lastDayToAddUndergrad</span>
-<span class="fc" id="L230">        : lastDayToAddGrad;</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">    return lastDayToAddUndergrad.isAfter(lastDayToAddGrad)</span>
+<span class="fc" id="L220">        ? lastDayToAddUndergrad</span>
+<span class="fc" id="L221">        : lastDayToAddGrad;</span>
   }
 
   public boolean isQuarterInRegistrationPass(String quarterYYYYQ) {
-<span class="fc" id="L234">    UCSBAPIQuarter quarter = ucsbApiQuarterRepository.findById(quarterYYYYQ).orElse(null);</span>
-<span class="fc" id="L235">    LocalDateTime lastDay = lastDayToRegister(quarter);</span>
+<span class="fc" id="L225">    UCSBAPIQuarter quarter = ucsbApiQuarterRepository.findById(quarterYYYYQ).orElse(null);</span>
+<span class="fc" id="L226">    LocalDateTime lastDay = lastDayToRegister(quarter);</span>
 
-<span class="fc bfc" id="L237" title="All 2 branches covered.">    if (quarter == null) {</span>
-<span class="fc" id="L238">      return false;</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">    if (quarter == null) {</span>
+<span class="fc" id="L229">      return false;</span>
     }
 
-<span class="fc bfc" id="L241" title="All 2 branches covered.">    if (lastDay == null) {</span>
-<span class="fc" id="L242">      return false;</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">    if (lastDay == null) {</span>
+<span class="fc" id="L233">      return false;</span>
     }
 
-<span class="fc" id="L245">    LocalDateTime pass1Begin = quarter.getPass1Begin();</span>
+<span class="fc" id="L236">    LocalDateTime pass1Begin = quarter.getPass1Begin();</span>
 
-<span class="fc bfc" id="L247" title="All 2 branches covered.">    if (pass1Begin == null) {</span>
-<span class="fc" id="L248">      return false;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">    if (pass1Begin == null) {</span>
+<span class="fc" id="L239">      return false;</span>
     }
 
-<span class="fc" id="L251">    LocalDateTime currentDate = LocalDateTime.now();</span>
-<span class="fc bfc" id="L252" title="All 4 branches covered.">    return currentDate.isAfter(pass1Begin) &amp;&amp; currentDate.isBefore(lastDay);</span>
+<span class="fc" id="L242">    LocalDateTime currentDate = LocalDateTime.now();</span>
+<span class="fc bfc" id="L243" title="All 4 branches covered.">    return currentDate.isAfter(pass1Begin) &amp;&amp; currentDate.isBefore(lastDay);</span>
   }
 
   public List&lt;String&gt; getActiveRegistrationQuarters() throws Exception {
 
-<span class="fc" id="L257">    List&lt;String&gt; activeQuarters = getActiveQuarters();</span>
+<span class="fc" id="L248">    List&lt;String&gt; activeQuarters = getActiveQuarters();</span>
 
-<span class="fc" id="L259">    List&lt;String&gt; registrationQuarters =</span>
-<span class="fc" id="L260">        activeQuarters.stream().filter(yyyyq -&gt; isQuarterInRegistrationPass(yyyyq)).toList();</span>
-<span class="fc" id="L261">    return registrationQuarters;</span>
+<span class="fc" id="L250">    List&lt;String&gt; registrationQuarters =</span>
+<span class="fc" id="L251">        activeQuarters.stream().filter(yyyyq -&gt; isQuarterInRegistrationPass(yyyyq)).toList();</span>
+<span class="fc" id="L252">    return registrationQuarters;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
