@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
       @Parameter(
               name = &quot;searchTerms&quot;,
               description =
-                  &quot;Search terms for the course description or title, e.g. 'Computer Science' OR 'Data Structures'&quot;,
-              example = &quot;Computer Science&quot;,
+                  &quot;Search terms for the course description or title, e.g. 'Data' OR 'Algorithms'&quot;,
+              example = &quot;Data&quot;,
               required = true)
           @RequestParam(required = true)
           String searchTerms,
@@ -62,11 +62,11 @@ import org.springframework.web.bind.annotation.RestController;
 <span class="fc bfc" id="L62" title="All 2 branches covered.">    if (lectureOnly) {</span>
 <span class="fc" id="L63">      courseResults =</span>
 <span class="fc" id="L64">          convertedSectionCollection.findBySearchTermsAndQuarterRange(</span>
-              searchTerms, startQtr, endQtr, &quot;^(Lecture)&quot;);
+              searchTerms, startQtr, endQtr, &quot;00$&quot;);
     } else {
 <span class="fc" id="L67">      courseResults =</span>
 <span class="fc" id="L68">          convertedSectionCollection.findBySearchTermsAndQuarterRange(</span>
-              searchTerms, startQtr, endQtr, &quot;^.*&quot;);
+              searchTerms, startQtr, endQtr, &quot;.*&quot;);
     }
 <span class="fc" id="L71">    courseResults.sort(new ConvertedSection.ConvertedSectionSortDescendingByQuarterComparator());</span>
 <span class="fc" id="L72">    String body = mapper.writeValueAsString(courseResults);</span>
