@@ -23,6 +23,7 @@ describe("PersonalScheduleForm tests", () => {
   const queryClient = new QueryClient();
 
   beforeEach(() => {
+    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       springH2ConsoleEnabled: false,
       showSwaggerUILink: false,
@@ -147,9 +148,8 @@ describe("PersonalScheduleForm tests", () => {
       endQtrYYYYQ: null, // use fallback value
     });
 
-    const freshQueryClient = new QueryClient();
     render(
-      <QueryClientProvider client={freshQueryClient}>
+      <QueryClientProvider client={queryClient}>
         <Router>
           <PersonalScheduleForm submitAction={mockSubmitAction} />
         </Router>

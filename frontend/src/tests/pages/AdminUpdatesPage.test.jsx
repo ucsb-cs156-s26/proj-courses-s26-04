@@ -14,10 +14,13 @@ import { updatesFixtures } from "fixtures/updatesFixtures";
 describe("AdminUpdatesPage tests", () => {
   const axiosMock = new AxiosMockAdapter(axios);
 
+  const queryClient = new QueryClient();
+
   beforeEach(() => {
     vi.clearAllMocks();
     axiosMock.reset();
     axiosMock.resetHistory();
+    queryClient.clear();
     axiosMock
       .onGet("/api/systemInfo")
       .reply(200, systemInfoFixtures.showingNeither);
@@ -30,7 +33,6 @@ describe("AdminUpdatesPage tests", () => {
     axiosMock.onGet("/api/UCSBSubjects/all").reply(200, allTheSubjects);
   });
 
-  const queryClient = new QueryClient();
   test("Renders expected content", async () => {
     // act
     render(
@@ -50,10 +52,9 @@ describe("AdminUpdatesPage tests", () => {
     getItemSpy.mockImplementation(() => null);
     const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
 
-    const freshQueryClient = new QueryClient();
     // act
     render(
-      <QueryClientProvider client={freshQueryClient}>
+      <QueryClientProvider client={queryClient}>
         <MemoryRouter>
           <AdminUpdatesPage />
         </MemoryRouter>

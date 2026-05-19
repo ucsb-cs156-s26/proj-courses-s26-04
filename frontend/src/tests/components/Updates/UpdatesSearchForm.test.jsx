@@ -26,6 +26,7 @@ describe("UpdatesSearchForm tests", () => {
     vi.clearAllMocks();
     vi.spyOn(console, "error");
     console.error.mockImplementation(() => null);
+    queryClient.clear();
     axiosMock.onGet("/api/systemInfo").reply(200, {
       ...systemInfoFixtures.showingNeither,
       startQtrYYYYQ: "20201",
@@ -204,9 +205,8 @@ describe("UpdatesSearchForm tests", () => {
       endQtrYYYYQ: null, // use fallback value
     });
 
-    const freshQueryClient = new QueryClient();
     render(
-      <QueryClientProvider client={freshQueryClient}>
+      <QueryClientProvider client={queryClient}>
         <MemoryRouter>
           <UpdatesSearchForm
             updateQuarter={updateQuarter}

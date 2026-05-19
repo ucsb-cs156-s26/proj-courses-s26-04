@@ -28,6 +28,7 @@ describe("CourseOverTimeSearchForm tests", () => {
       axiosMock = new AxiosMockAdapter(axios);
       vi.clearAllMocks();
       vi.spyOn(console, "error").mockImplementation(() => null);
+      queryClient.clear();
 
       axiosMock
         .onGet("/api/currentUser")
@@ -508,9 +509,8 @@ describe("CourseOverTimeSearchForm tests", () => {
         endQtrYYYYQ: null, // use fallback value
       });
 
-      const freshQueryClient = new QueryClient();
       render(
-        <QueryClientProvider client={freshQueryClient}>
+        <QueryClientProvider client={queryClient}>
           <MemoryRouter>
             <CourseOverTimeSearchForm />
           </MemoryRouter>

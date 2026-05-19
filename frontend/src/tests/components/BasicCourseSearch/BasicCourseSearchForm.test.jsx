@@ -28,6 +28,7 @@ describe("BasicCourseSearchForm tests", () => {
     vi.clearAllMocks();
     vi.spyOn(console, "error");
     console.error.mockImplementation(() => null);
+    queryClient.clear();
 
     axiosMock
       .onGet("/api/currentUser")
@@ -191,9 +192,8 @@ describe("BasicCourseSearchForm tests", () => {
       endQtrYYYYQ: null, // use fallback value
     });
 
-    const freshQueryClient = new QueryClient();
     render(
-      <QueryClientProvider client={freshQueryClient}>
+      <QueryClientProvider client={queryClient}>
         <MemoryRouter>
           <BasicCourseSearchForm />
         </MemoryRouter>
