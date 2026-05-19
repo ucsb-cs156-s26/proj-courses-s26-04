@@ -11,6 +11,9 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 vi.mock("react-router-dom");
 const { _MemoryRouter } = await vi.importActual("react-router-dom");
 
+const SYSTEM_INFO_STORAGE_KEY = "systemInfo";
+const STALE_TIME_MS = 300000;
+
 describe("utils/systemInfo tests", () => {
   let queryClient;
   let axiosMock;
@@ -23,12 +26,14 @@ describe("utils/systemInfo tests", () => {
       },
     });
     axiosMock = new AxiosMockAdapter(axios);
+    localStorage.clear();
   });
 
   afterEach(() => {
     queryClient.clear();
     axiosMock.restore();
     vi.clearAllMocks();
+    localStorage.clear();
   });
   describe("useSystemInfo tests", () => {
     test("useSystemInfo retrieves initial data", async () => {
@@ -54,7 +59,7 @@ describe("utils/systemInfo tests", () => {
       await waitFor(() => result.current.isFetched);
     });
 
-    test("useSystemInfo retrieves data from API", async () => {
+    test("useSystemInfo retrieves data from API and stores in localStorage", async () => {
       const wrapper = ({ children }) => (
         <QueryClientProvider client={queryClient}>
           {children}
@@ -73,7 +78,69 @@ describe("utils/systemInfo tests", () => {
       await waitFor(() => result.current.isFetched);
 
       expect(result.current.data).toEqual(systemInfoFixtures.showingBoth);
+
+      // Verify data was persisted to localStorage
+      const stored = JSON.parse(localStorage.getItem(SYSTEM_INFO_STORAGE_KEY));
+      expect(stored.data).toEqual(systemInfoFixtures.showingBoth);
+      expect(stored.timestamp).toBeLessThanOrEqual(Date.now());
+
       queryClient.clear();
+    });
+
+    test("useSystemInfo uses fresh localStorage cache without calling API", async () => {
+      const wrapper = ({ children }) => (
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      );
+
+      // Seed localStorage with fresh data
+      localStorage.setItem(
+        SYSTEM_INFO_STORAGE_KEY,
+        JSON.stringify({
+          data: systemInfoFixtures.showingBoth,
+          timestamp: Date.now(),
+        }),
+      );
+
+      axiosMock.onGet("/api/systemInfo").reply(200, {});
+
+      const { result } = renderHook(() => useSystemInfo(), { wrapper });
+
+      await waitFor(() => result.current.isFetched);
+
+      // Should use localStorage cache, not call the API
+      expect(axiosMock.history.get.length).toBe(0);
+      expect(result.current.data).toEqual(systemInfoFixtures.showingBoth);
+    });
+
+    test("useSystemInfo fetches from API when localStorage cache is stale", async () => {
+      const wrapper = ({ children }) => (
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      );
+
+      // Seed localStorage with stale data (timestamp older than STALE_TIME_MS)
+      localStorage.setItem(
+        SYSTEM_INFO_STORAGE_KEY,
+        JSON.stringify({
+          data: systemInfoFixtures.showingNeither,
+          timestamp: Date.now() - STALE_TIME_MS - 1000,
+        }),
+      );
+
+      axiosMock
+        .onGet("/api/systemInfo")
+        .reply(200, systemInfoFixtures.showingBoth);
+
+      const { result } = renderHook(() => useSystemInfo(), { wrapper });
+
+      await waitFor(() => result.current.isFetched);
+
+      // Should bypass stale cache and call the API
+      expect(axiosMock.history.get.length).toBe(1);
+      expect(result.current.data).toEqual(systemInfoFixtures.showingBoth);
     });
 
     test("useSystemInfo does not refetch when data is already cached (within staleTime)", async () => {
