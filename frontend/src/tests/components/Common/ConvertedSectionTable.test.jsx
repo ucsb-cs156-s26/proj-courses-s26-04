@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import ConvertedSectionTable from "main/components/Common/ConvertedSectionTable";
-import { oneSection } from "fixtures/sectionFixtures";
+import { oneSection, oneSectionWithSession } from "fixtures/sectionFixtures";
 
 describe("ConvertedSectionTable tests", () => {
   test("renders with expected headers", () => {
@@ -20,6 +20,7 @@ describe("ConvertedSectionTable tests", () => {
       "Location",
       "Instructors",
       "Section",
+      "Session",
     ];
 
     expectedHeaders.forEach((header) => {
@@ -71,10 +72,27 @@ describe("ConvertedSectionTable tests", () => {
     expect(section).toBeInTheDocument();
     expect(section).toHaveTextContent("0100");
 
+    const session = screen.getByTestId(`${testid}-cell-row-0-col-session`);
+    expect(session).toBeInTheDocument();
+    expect(session).toHaveTextContent("");
+
     const instructors = screen.getByTestId(
       `${testid}-cell-row-0-col-instructors`,
     );
     expect(instructors).toBeInTheDocument();
     expect(instructors).toHaveTextContent("WANG L C");
+  });
+
+  test("renders session value from session[5]", () => {
+    const testid = "SessionTestId";
+    render(
+      <ConvertedSectionTable
+        sections={oneSectionWithSession}
+        testid={testid}
+      />,
+    );
+    const session = screen.getByTestId(`${testid}-cell-row-0-col-session`);
+    expect(session).toBeInTheDocument();
+    expect(session).toHaveTextContent("A");
   });
 });
