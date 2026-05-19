@@ -84,8 +84,10 @@ describe("ConvertedSectionExpandableTable tests", () => {
     expect(screen.queryByText("12609")).not.toBeInTheDocument();
 
     const expandButton = screen.getByTestId(`${testid}-row-1-expand-button`);
+    expect(expandButton).toHaveTextContent("➕");
     expect(expandButton).toHaveStyle({ cursor: "pointer" });
     fireEvent.click(expandButton);
+    expect(expandButton).toHaveTextContent("➖");
 
     expect(screen.getByText("12609")).toBeInTheDocument();
     expect(
@@ -109,6 +111,15 @@ describe("ConvertedSectionExpandableTable tests", () => {
     expect(
       screen.getByTestId(`${testid}-cell-row-1-col-instructors`),
     ).toHaveTextContent("HESPANHA J P");
+    expect(
+      screen.getByTestId(`${testid}-cell-row-1.0-col-quarter`),
+    ).toBeEmptyDOMElement();
+    expect(
+      screen.getByTestId(`${testid}-cell-row-1.0-col-courseId`),
+    ).toBeEmptyDOMElement();
+    expect(
+      screen.getByTestId(`${testid}-cell-row-1.0-col-title`),
+    ).toBeEmptyDOMElement();
     expect(
       screen.getByTestId(`${testid}-cell-row-1.0-col-status`),
     ).toHaveTextContent("Full");
