@@ -36,6 +36,7 @@ public class CourseOverTimeDescriptionControllerTests {
   @MockBean ConvertedSectionCollection convertedSectionCollection;
   @MockitoBean UserRepository userRepository;
 
+  // Test that an empty request returns all courses
   @Test
   public void test_search_emptyRequest() throws Exception {
     List<ConvertedSection> expectedResult = new ArrayList<ConvertedSection>();
@@ -45,19 +46,19 @@ public class CourseOverTimeDescriptionControllerTests {
     String url =
         String.format(urlTemplate, "Intro to object oriented design", "20222", "20212", "false");
 
-    // mock
+    // Mock an empty request to the convertedSectionCollection
     when(convertedSectionCollection.findBySearchTermsAndQuarterRange(
             any(String.class), any(String.class), any(String.class), any(String.class)))
         .thenReturn(expectedResult);
 
-    // act
+    // Perform the request and expect a 200 OK response
     MvcResult response =
         mockMvc
             .perform(get(url).contentType("application/json"))
             .andExpect(status().isOk())
             .andReturn();
 
-    // assert
+    // Assert that the response is the expected result
     String responseString = response.getResponse().getContentAsString();
     String expectedString = mapper.writeValueAsString(expectedResult);
 
@@ -91,15 +92,15 @@ public class CourseOverTimeDescriptionControllerTests {
     List<ConvertedSection> expectedSecs = new ArrayList<ConvertedSection>();
     expectedSecs.addAll(Arrays.asList(cs1, cs2));
 
-    // mock
+    // Mock a request to the convertedSectionCollection that returns the expected result
     when(convertedSectionCollection.findBySearchTermsAndQuarterRange(
-            any(String.class), any(String.class), any(String.class), eq("^(Lecture)")))
+            any(String.class), any(String.class), any(String.class), eq("00$")))
         .thenReturn(expectedSecs);
 
-    // act
+    // Perform the request and expect a 200 OK response
     MvcResult response = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
-    // assert
+    // Assert that the response is the expected result
     String expectedString = mapper.writeValueAsString(expectedSecs);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedString, responseString);
@@ -142,15 +143,15 @@ public class CourseOverTimeDescriptionControllerTests {
     expectedSecsInOrder.addAll(
         Arrays.asList(cs2, cs1)); // This is the order that should be returned when sorted
 
-    // mock
+    // Mock a request to the convertedSectionCollection that returns the expected result
     when(convertedSectionCollection.findBySearchTermsAndQuarterRange(
-            any(String.class), any(String.class), any(String.class), eq("^.*")))
+            any(String.class), any(String.class), any(String.class), eq(".*")))
         .thenReturn(expectedSecsOutOfOrder); // as they would be returned from the database
 
-    // act
+    // Perform the request and expect a 200 OK response
     MvcResult response = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
-    // assert
+    // Assert that the response is the expected result
     String expectedString = mapper.writeValueAsString(expectedSecsInOrder);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedString, responseString);

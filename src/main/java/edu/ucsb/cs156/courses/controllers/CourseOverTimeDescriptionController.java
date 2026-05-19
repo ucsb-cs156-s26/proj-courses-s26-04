@@ -29,8 +29,8 @@ public class CourseOverTimeDescriptionController {
       @Parameter(
               name = "searchTerms",
               description =
-                  "Search terms for the course description or title, e.g. 'Computer Science' OR 'Data Structures'",
-              example = "Computer Science",
+                  "Search terms for the course description or title, e.g. 'Data' OR 'Algorithms'",
+              example = "Data",
               required = true)
           @RequestParam(required = true)
           String searchTerms,
@@ -62,11 +62,11 @@ public class CourseOverTimeDescriptionController {
     if (lectureOnly) {
       courseResults =
           convertedSectionCollection.findBySearchTermsAndQuarterRange(
-              searchTerms, startQtr, endQtr, "^(Lecture)");
+              searchTerms, startQtr, endQtr, "00$");
     } else {
       courseResults =
           convertedSectionCollection.findBySearchTermsAndQuarterRange(
-              searchTerms, startQtr, endQtr, "^.*");
+              searchTerms, startQtr, endQtr, ".*");
     }
     courseResults.sort(new ConvertedSection.ConvertedSectionSortDescendingByQuarterComparator());
     String body = mapper.writeValueAsString(courseResults);
