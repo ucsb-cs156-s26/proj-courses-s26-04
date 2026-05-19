@@ -33,8 +33,7 @@ export default function CSVDownloadsPage() {
   const defaultSubjectArea = "ANTH";
 
   const [quarterOnly, setQuarterOnly] = useState(defaultQuarter);
-  const [quarterWithSubject, setQuarterWithSubject] =
-    useState(defaultQuarter);
+  const [quarterWithSubject, setQuarterWithSubject] = useState(defaultQuarter);
   const [subjectArea, setSubjectArea] = useState(
     subjects[0]?.subjectCode || defaultSubjectArea,
   );

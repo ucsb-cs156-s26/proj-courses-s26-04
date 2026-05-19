@@ -32,13 +32,15 @@ vi.mock("main/utils/systemInfo", () => ({
 }));
 
 vi.mock("main/utils/useBackend", () => ({
-  useBackend: () => mockUseBackend(),
+  useBackend: (...args) => mockUseBackend(...args),
 }));
 
 describe("CSVDownloadsPage tests", () => {
   const originalLocation = window.location;
 
   beforeEach(() => {
+    mockUseBackend.mockClear();
+    mockUseSystemInfo.mockClear();
     mockUseSystemInfo.mockReturnValue({
       data: {
         startQtrYYYYQ: "20241",
@@ -89,6 +91,12 @@ describe("CSVDownloadsPage tests", () => {
     renderPage();
 
     expect(await screen.findByText("CSV Downloads")).toBeInTheDocument();
+
+    expect(mockUseBackend).toHaveBeenCalledWith(
+      ["/api/UCSBSubjects/all"],
+      { method: "GET", url: "/api/UCSBSubjects/all" },
+      [],
+    );
   });
 
   test("submitting by-quarter form downloads selected quarter", () => {
@@ -130,8 +138,9 @@ describe("CSVDownloadsPage tests", () => {
     const subjectDropdown = screen.getByLabelText("Subject Area");
     const levelDropdown = screen.getByLabelText("Course Level");
     const omitSectionsCheckbox = screen.getByLabelText("Omit sections");
-    const withTimeLocationsCheckbox =
-      screen.getByLabelText("With time/locations");
+    const withTimeLocationsCheckbox = screen.getByLabelText(
+      "With time/locations",
+    );
 
     fireEvent.change(quarterDropdown, { target: { value: "20241" } });
     fireEvent.change(subjectDropdown, { target: { value: "CMPSC" } });
