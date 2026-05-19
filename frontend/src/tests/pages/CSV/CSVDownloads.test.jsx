@@ -163,7 +163,7 @@ describe("CSVDownloadsPage tests", () => {
     const assignMock = mockLocationAssign();
 
     mockUseSystemInfo.mockReturnValue({
-      data: {},
+      data: undefined,
     });
 
     mockUseBackend.mockReturnValue({
