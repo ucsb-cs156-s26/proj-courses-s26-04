@@ -182,15 +182,6 @@ public class UCSBAPIQuarterService {
         savedQuarters.add(quarter);
       }
     }
-
-    /*quarters.forEach(
-    (quarter) -> {
-      if (quarterYYYYQInRange(quarter.getQuarter())) {
-        ucsbApiQuarterRepository.save(quarter);
-        savedQuarters.add(quarter);
-      }
-    });
-    */
     log.info("savedQuarters.size={}", savedQuarters.size());
     return savedQuarters;
   }

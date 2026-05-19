@@ -630,7 +630,6 @@ public class UCSBAPIQuarterServiceTests {
         Mockito.mockStatic(LocalDateTime.class)) {
       mockedLocalDateTime.when(LocalDateTime::now).thenReturn(fixedDateTime);
 
-      // List<String> expectedResult = List.of("20212", "20213");
       List<String> expectedResult = List.of("20212");
       List<String> actualResult = service.getActiveRegistrationQuarters();
 
