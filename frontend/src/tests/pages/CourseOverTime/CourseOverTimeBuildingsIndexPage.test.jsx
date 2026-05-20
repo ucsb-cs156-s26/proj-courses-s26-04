@@ -91,6 +91,11 @@ describe("CourseOverTimeBuildingsIndexPage tests", () => {
     expect(
       screen.getByText((text) => text.includes("184")),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Lectures and exercises on the literature and other information resources of use in chemistry.",
+      ),
+    ).toBeInTheDocument();
   });
 
   test("filters sections by classroom when classroom is selected", async () => {

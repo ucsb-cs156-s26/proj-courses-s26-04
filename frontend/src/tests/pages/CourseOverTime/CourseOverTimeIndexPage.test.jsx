@@ -93,5 +93,10 @@ describe("CourseOverTimeIndexPage tests", () => {
     });
 
     expect(screen.getByText("ECE 1A -1")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Introductory seminar to expose students to a broad range of topics in computer engineering.",
+      ),
+    ).toBeInTheDocument();
   });
 });
