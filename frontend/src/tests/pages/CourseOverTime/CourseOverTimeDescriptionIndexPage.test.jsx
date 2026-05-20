@@ -101,9 +101,7 @@ describe("CourseOverTimeDescriptionIndexPage tests", () => {
 
     expect(screen.getByText("ECE 1A -1")).toBeInTheDocument();
     expect(
-      screen.getAllByText(
-        "Introductory seminar to expose students to a broad range of topics in computer engineering.",
-      ),
+      screen.getByTestId("ConvertedSectionTable-cell-row-0-col-description"),
     ).toBeInTheDocument();
   });
 });

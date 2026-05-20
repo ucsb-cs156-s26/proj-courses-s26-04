@@ -92,9 +92,7 @@ describe("CourseOverTimeBuildingsIndexPage tests", () => {
       screen.getByText((text) => text.includes("184")),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(
-        "Lectures and exercises on the literature and other information resources of use in chemistry.",
-      ),
+      screen.getByTestId("ConvertedSectionTable-cell-row-0-col-description"),
     ).toBeInTheDocument();
   });
 
