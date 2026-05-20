@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.courses.startup;
 
 import edu.ucsb.cs156.courses.jobs.UpdateCourseDataJobFactory;
+import edu.ucsb.cs156.courses.models.Quarter;
 import edu.ucsb.cs156.courses.services.UCSBAPIQuarterService;
 import edu.ucsb.cs156.courses.services.UCSBSubjectsService;
 import edu.ucsb.cs156.courses.services.jobs.JobContextConsumer;
@@ -42,7 +43,13 @@ public class CoursesStartup {
     } catch (Exception e) {
       log.error("Error in ucsbAPIQuarterService.loadAllQuarters():", e);
     }
+
     String endQtrYYYYQ = ucsbAPIQuarterService.getEndQtrYYYYQ();
+
+    // Validate START_QTR and END_QTR values
+    Quarter.validateQuarterRange(startQtrYYYYQ, "START_QTR");
+    Quarter.validateQuarterRange(endQtrYYYYQ, "END_QTR");
+
     JobContextConsumer updateCourseDataJob =
         updateCourseDataJobFactory.createForSubjectAndQuarterRange(
             "CMPSC", startQtrYYYYQ, endQtrYYYYQ, true);
@@ -62,6 +69,11 @@ public class CoursesStartup {
     log.info("runOnStartupInProductionOnly called");
     // Launch course update job
     String endQtrYYYYQ = ucsbAPIQuarterService.getEndQtrYYYYQ();
+
+    // Validate START_QTR and END_QTR values
+    Quarter.validateQuarterRange(startQtrYYYYQ, "START_QTR");
+    Quarter.validateQuarterRange(endQtrYYYYQ, "END_QTR");
+
     JobContextConsumer updateCourseDataJob =
         updateCourseDataJobFactory.createForQuarterRange(startQtrYYYYQ, endQtrYYYYQ, true);
     jobService.runAsJob(updateCourseDataJob);

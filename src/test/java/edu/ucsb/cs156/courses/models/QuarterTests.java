@@ -1,7 +1,9 @@
 package edu.ucsb.cs156.courses.models;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -392,5 +394,31 @@ public class QuarterTests {
     Quarter q1 = new Quarter("W20");
     Quarter q2 = new Quarter("F20");
     assertNotEquals(q1.hashCode(), q2.hashCode());
+  }
+
+  @Test
+  public void test_validateQuarterRange_valid() {
+    assertDoesNotThrow(() -> Quarter.validateQuarterRange("20211", "START_QTR"));
+    assertDoesNotThrow(() -> Quarter.validateQuarterRange("20501", "END_QTR"));
+  }
+
+  @Test
+  public void test_validateQuarterRange_invalidFormat() {
+    assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("2021", "START_QTR"));
+  }
+
+  @Test
+  public void test_validateQuarterRange_invalidQuarterDigit() {
+    assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("20225", "END_QTR"));
+  }
+
+  @Test
+  public void test_validateQuarterRange_yearTooLow() {
+    assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("19791", "START_QTR"));
+  }
+
+  @Test
+  public void test_validateQuarterRange_yearTooHigh() {
+    assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("20511", "END_QTR"));
   }
 }

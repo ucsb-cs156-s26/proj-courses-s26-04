@@ -1,5 +1,6 @@
 package edu.ucsb.cs156.courses.jobs;
 
+import edu.ucsb.cs156.courses.models.Quarter;
 import edu.ucsb.cs156.courses.services.UCSBAPIQuarterService;
 import edu.ucsb.cs156.courses.services.jobs.JobContextConsumer;
 import edu.ucsb.cs156.courses.services.jobs.JobService;
@@ -39,6 +40,11 @@ public class ScheduledJobs {
 
     String currentQuarterYYYYQ = ucsbAPIQuarterService.getCurrentQuarterYYYYQ();
     String endQtrYYYYQ = ucsbAPIQuarterService.getEndQtrYYYYQ();
+
+    // Validate quarter values
+    Quarter.validateQuarterRange(currentQuarterYYYYQ, "currentQuarter");
+    Quarter.validateQuarterRange(endQtrYYYYQ, "END_QTR");
+
     JobContextConsumer updateCourseDataJob =
         updateCourseDataJobFactory.createForQuarterRange(currentQuarterYYYYQ, endQtrYYYYQ, true);
     jobService.runAsJob(updateCourseDataJob);
