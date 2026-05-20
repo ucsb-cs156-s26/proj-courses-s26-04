@@ -45,4 +45,9 @@ const usersFixtures = {
   ],
 };
 
+usersFixtures.threeUsersPage = {
+  content: usersFixtures.threeUsers,
+  totalPages: 1,
+};
+
 export default usersFixtures;
