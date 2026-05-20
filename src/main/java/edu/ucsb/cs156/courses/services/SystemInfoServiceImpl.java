@@ -2,11 +2,10 @@ package edu.ucsb.cs156.courses.services;
 
 import edu.ucsb.cs156.courses.models.SystemInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import edu.ucsb.cs156.courses.services.UCSBAPIQuarterService;
 
 // This class relies on property values
 // For hints on testing, see: https://www.baeldung.com/spring-boot-testing-configurationproperties
@@ -49,7 +48,10 @@ public class SystemInfoServiceImpl extends SystemInfoService {
       // prefer runtime-computed END_QTR when available
       endQtr = ucsbApiQuarterService.getEndQtrYYYYQ();
     } catch (Exception e) {
-      log.warn("Unable to compute runtime endQtrYYYYQ, falling back to configured value {}", this.endQtrYYYYQ, e);
+      log.warn(
+          "Unable to compute runtime endQtrYYYYQ, falling back to configured value {}",
+          this.endQtrYYYYQ,
+          e);
     }
 
     SystemInfo si =
