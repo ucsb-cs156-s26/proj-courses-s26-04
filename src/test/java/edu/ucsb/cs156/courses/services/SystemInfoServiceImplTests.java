@@ -3,12 +3,14 @@ package edu.ucsb.cs156.courses.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import edu.ucsb.cs156.courses.models.SystemInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,8 +24,11 @@ class SystemInfoServiceImplTests {
 
   @Autowired private SystemInfoService systemInfoService;
 
+  @MockBean private UCSBAPIQuarterService ucsbAPIQuarterService;
+
   @Test
   void test_getSystemInfo() {
+    when(ucsbAPIQuarterService.getEndQtrYYYYQ()).thenReturn("20223");
     SystemInfo si = systemInfoService.getSystemInfo();
     assertTrue(si.getSpringH2ConsoleEnabled());
     assertTrue(si.getShowSwaggerUILink());

@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import edu.ucsb.cs156.courses.services.UCSBAPIQuarterService;
 
 // This class relies on property values
 // For hints on testing, see: https://www.baeldung.com/spring-boot-testing-configurationproperties
@@ -26,6 +28,8 @@ public class SystemInfoServiceImpl extends SystemInfoService {
   @Value("${app.endQtrYYYYQ:20222}")
   private String endQtrYYYYQ;
 
+  @Autowired private UCSBAPIQuarterService ucsbApiQuarterService;
+
   @Value("${app.sourceRepo:https://github.com/ucsb-cs156/proj-courses}")
   private String sourceRepo;
 
@@ -40,12 +44,20 @@ public class SystemInfoServiceImpl extends SystemInfoService {
   }
 
   public SystemInfo getSystemInfo() {
+    String endQtr = this.endQtrYYYYQ;
+    try {
+      // prefer runtime-computed END_QTR when available
+      endQtr = ucsbApiQuarterService.getEndQtrYYYYQ();
+    } catch (Exception e) {
+      log.warn("Unable to compute runtime endQtrYYYYQ, falling back to configured value {}", this.endQtrYYYYQ, e);
+    }
+
     SystemInfo si =
         SystemInfo.builder()
             .springH2ConsoleEnabled(this.springH2ConsoleEnabled)
             .showSwaggerUILink(this.showSwaggerUILink)
             .startQtrYYYYQ(this.startQtrYYYYQ)
-            .endQtrYYYYQ(this.endQtrYYYYQ)
+            .endQtrYYYYQ(endQtr)
             .sourceRepo(this.sourceRepo)
             .commitMessage(this.commitMessage)
             .commitId(this.commitId)
