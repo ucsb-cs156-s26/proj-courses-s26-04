@@ -64,6 +64,7 @@ describe("GEAreaTable tests", () => {
       "Quarter",
       "Course ID",
       "Title",
+      "GE Areas",
       "Status",
       "Enrolled",
       "Location",
@@ -112,6 +113,10 @@ describe("GEAreaTable tests", () => {
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-title`),
     ).toHaveTextContent("CALC W/ ALG & TRIG");
+
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-generalEducation`),
+    ).toHaveTextContent("C, QNT");
 
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-status`),
