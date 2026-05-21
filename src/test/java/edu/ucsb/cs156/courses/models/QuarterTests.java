@@ -421,4 +421,20 @@ public class QuarterTests {
   public void test_validateQuarterRange_yearTooHigh() {
     assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("20511", "END_QTR"));
   }
+
+  @Test
+  public void test_validateQuarterRange_start_equals_end_does_not_throw() {
+    Quarter.validateQuarterRange("20224", "20224");
+  }
+
+  @Test
+  public void test_validateQuarterRange_1980_is_valid() {
+    assertDoesNotThrow(() -> Quarter.validateQuarterRange("19801", "START_QTR"));
+  }
+
+  @Test
+  public void test_validateQuarterRange_2050_is_valid() {
+    assertDoesNotThrow(() -> Quarter.validateQuarterRange("20504", "END_QTR"));
+  }
+
 }
