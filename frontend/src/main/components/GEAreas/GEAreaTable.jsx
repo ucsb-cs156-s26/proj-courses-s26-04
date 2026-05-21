@@ -14,16 +14,8 @@ import {
 } from "main/utils/sectionUtils.jsx";
 import { yyyyqToQyy } from "main/utils/quarterUtilities";
 
-const formatGeneralEducation = (generalEducation) => {
-  if (!generalEducation || generalEducation.length === 0) {
-    return "";
-  }
-
-  return generalEducation
-    .map((ge) => ge.geCode?.trim())
-    .filter(Boolean)
-    .join(", ");
-};
+const formatGeneralEducation = (generalEducation) =>
+  (generalEducation ?? []).map((ge) => ge.geCode.trim()).join(", ");
 
 export default function GEAreaTable({ generalEducation }) {
   const testid = "GEAreaTable";

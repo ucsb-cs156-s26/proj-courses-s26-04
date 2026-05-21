@@ -71,7 +71,7 @@ describe("GeneralEducationSearchPage tests", () => {
       expect(
         screen.getByTestId(`${tableTestId}-cell-row-0-col-quarter`),
       ).toHaveTextContent("F24");
-        expect(
+      expect(
         screen.getByTestId(`${tableTestId}-cell-row-0-col-generalEducation`),
       ).toHaveTextContent("C, QNT");
       expect(
