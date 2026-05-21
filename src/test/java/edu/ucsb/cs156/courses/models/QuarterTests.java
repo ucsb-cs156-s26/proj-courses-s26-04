@@ -436,5 +436,4 @@ public class QuarterTests {
   public void test_validateQuarterRange_2050_is_valid() {
     assertDoesNotThrow(() -> Quarter.validateQuarterRange("20504", "END_QTR"));
   }
-
 }
