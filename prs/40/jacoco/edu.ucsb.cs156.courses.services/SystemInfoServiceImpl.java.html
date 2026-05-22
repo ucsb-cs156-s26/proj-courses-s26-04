@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemInfoServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">courses</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.courses.services</a> &gt; <span class="el_source">SystemInfoServiceImpl.java</span></div><h1>SystemInfoServiceImpl.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.courses.services;
+
+import edu.ucsb.cs156.courses.models.SystemInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Service;
+
+// This class relies on property values
+// For hints on testing, see: https://www.baeldung.com/spring-boot-testing-configurationproperties
+
+<span class="fc" id="L13">@Slf4j</span>
+@Service(&quot;systemInfo&quot;)
+@ConfigurationProperties
+<span class="fc" id="L16">public class SystemInfoServiceImpl extends SystemInfoService {</span>
+
+  @Value(&quot;${spring.h2.console.enabled:false}&quot;)
+  private boolean springH2ConsoleEnabled;
+
+  @Value(&quot;${app.showSwaggerUILink:false}&quot;)
+  private boolean showSwaggerUILink;
+
+  @Value(&quot;${app.startQtrYYYYQ:20221}&quot;)
+  private String startQtrYYYYQ;
+
+  @Value(&quot;${app.endQtrYYYYQ:20222}&quot;)
+  private String endQtrYYYYQ;
+
+  @Autowired private UCSBAPIQuarterService ucsbApiQuarterService;
+
+  @Value(&quot;${app.sourceRepo:https://github.com/ucsb-cs156/proj-courses}&quot;)
+  private String sourceRepo;
+
+  @Value(&quot;${git.commit.message.short:unknown}&quot;)
+  private String commitMessage;
+
+  @Value(&quot;${git.commit.id.abbrev:unknown}&quot;)
+  private String commitId;
+
+  public static String githubUrl(String repo, String commit) {
+<span class="fc bfc" id="L42" title="All 4 branches covered.">    return commit != null &amp;&amp; repo != null ? repo + &quot;/commit/&quot; + commit : null;</span>
+  }
+
+  public SystemInfo getSystemInfo() {
+<span class="fc" id="L46">    String endQtr = this.endQtrYYYYQ;</span>
+    try {
+      // prefer runtime-computed END_QTR when available
+<span class="fc" id="L49">      endQtr = ucsbApiQuarterService.getEndQtrYYYYQ();</span>
+<span class="fc" id="L50">    } catch (Exception e) {</span>
+<span class="fc" id="L51">      log.warn(</span>
+          &quot;Unable to compute runtime endQtrYYYYQ, falling back to configured value {}&quot;,
+          this.endQtrYYYYQ,
+          e);
+<span class="fc" id="L55">    }</span>
+
+    SystemInfo si =
+<span class="fc" id="L58">        SystemInfo.builder()</span>
+<span class="fc" id="L59">            .springH2ConsoleEnabled(this.springH2ConsoleEnabled)</span>
+<span class="fc" id="L60">            .showSwaggerUILink(this.showSwaggerUILink)</span>
+<span class="fc" id="L61">            .startQtrYYYYQ(this.startQtrYYYYQ)</span>
+<span class="fc" id="L62">            .endQtrYYYYQ(endQtr)</span>
+<span class="fc" id="L63">            .sourceRepo(this.sourceRepo)</span>
+<span class="fc" id="L64">            .commitMessage(this.commitMessage)</span>
+<span class="fc" id="L65">            .commitId(this.commitId)</span>
+<span class="fc" id="L66">            .githubUrl(githubUrl(this.sourceRepo, this.commitId))</span>
+<span class="fc" id="L67">            .build();</span>
+<span class="fc" id="L68">    log.info(&quot;getSystemInfo returns {}&quot;, si);</span>
+<span class="fc" id="L69">    return si;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
