@@ -18,22 +18,29 @@ public class CustomErrorControllerTests extends ControllerTestCase {
 
   @Test
   public void testHandleError_404() throws Exception {
-    mockMvc.perform(get("/error")
-            .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 404)
-            .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/some-non-existent-page"))
+    mockMvc
+        .perform(
+            get("/error")
+                .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 404)
+                .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/some-non-existent-page"))
         .andExpect(status().isOk())
         .andExpect(view().name("error"))
         .andExpect(model().attribute("status", 404))
         .andExpect(model().attribute("error", HttpStatus.NOT_FOUND.getReasonPhrase()))
-        .andExpect(model().attribute("message",
-            "The page you are looking for is either have been removed or temporarily unavailable."));
+        .andExpect(
+            model()
+                .attribute(
+                    "message",
+                    "The page you are looking for is either have been removed or temporarily unavailable."));
   }
 
   @Test
   public void testHandleError_403() throws Exception {
-    mockMvc.perform(get("/error")
-            .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 403)
-            .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/admin/something"))
+    mockMvc
+        .perform(
+            get("/error")
+                .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 403)
+                .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/admin/something"))
         .andExpect(status().isOk())
         .andExpect(view().name("error"))
         .andExpect(model().attribute("status", 403))
@@ -44,23 +51,28 @@ public class CustomErrorControllerTests extends ControllerTestCase {
   @Test
   public void testHandleError_500_withException() throws Exception {
     Exception testException = new RuntimeException("Test exception");
-    mockMvc.perform(get("/error")
-            .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 500)
-            .requestAttr(RequestDispatcher.ERROR_EXCEPTION, testException)
-            .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/api/something"))
+    mockMvc
+        .perform(
+            get("/error")
+                .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 500)
+                .requestAttr(RequestDispatcher.ERROR_EXCEPTION, testException)
+                .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/api/something"))
         .andExpect(status().isOk())
         .andExpect(view().name("error"))
         .andExpect(model().attribute("status", 500))
         .andExpect(model().attribute("error", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-        .andExpect(model().attribute("message", "Something went wrong on our end. Sorry about that"))
+        .andExpect(
+            model().attribute("message", "Something went wrong on our end. Sorry about that"))
         .andExpect(model().attribute("exceptionMessage", "Test exception"));
   }
 
   @Test
   public void testHandleError_otherStatus() throws Exception {
-    mockMvc.perform(get("/error")
-            .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 400)
-            .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/some-path"))
+    mockMvc
+        .perform(
+            get("/error")
+                .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 400)
+                .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/some-path"))
         .andExpect(status().isOk())
         .andExpect(view().name("error"))
         .andExpect(model().attribute("status", 400))
@@ -70,8 +82,8 @@ public class CustomErrorControllerTests extends ControllerTestCase {
 
   @Test
   public void testHandleError_noStatusCode_noException() throws Exception {
-    mockMvc.perform(get("/error")
-            .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/api/something"))
+    mockMvc
+        .perform(get("/error").requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/api/something"))
         .andExpect(status().isOk())
         .andExpect(view().name("error"))
         .andExpect(model().attribute("status", 500))

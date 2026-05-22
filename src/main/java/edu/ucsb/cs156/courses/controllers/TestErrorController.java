@@ -4,8 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Controller for testing the custom error page.
- * This controller intentionally throws exceptions to trigger the error page.
+ * Controller for testing the custom error page. This controller intentionally throws exceptions to
+ * trigger the error page.
  */
 @Controller
 public class TestErrorController {
