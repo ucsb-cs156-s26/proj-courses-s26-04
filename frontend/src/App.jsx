@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CourseDescriptionIndexPage from "main/pages/CourseDescriptions/CourseDescriptionIndexPage";
+import CourseOverTimeDescriptionIndexPage from "main/pages/CourseOverTime/CourseOverTimeDescriptionIndexPage";
 import ProfilePage from "main/pages/ProfilePage";
 import AdminUsersPage from "main/pages/Admin/AdminUsersPage";
 import AdminUpdatesPage from "main/pages/Admin/AdminUpdatesPage";
@@ -90,7 +90,7 @@ function App() {
         <Route
           exact
           path="/coursedescriptions/search"
-          element={<CourseDescriptionIndexPage />}
+          element={<CourseOverTimeDescriptionIndexPage />}
         />
         <Route
           exact
