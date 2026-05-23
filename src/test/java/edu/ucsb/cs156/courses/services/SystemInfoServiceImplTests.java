@@ -38,12 +38,12 @@ class SystemInfoServiceImplTests {
   }
 
   @Test
-  void test_getSystemInfo_when_quarter_service_fails_uses_configured_end_qtr() {
+  void test_getSystemInfo_when_quarter_service_fails_returns_null_end_qtr() {
     when(ucsbAPIQuarterService.getEndQtrYYYYQ()).thenThrow(new RuntimeException("boom"));
 
     SystemInfo si = systemInfoService.getSystemInfo();
 
-    assertEquals("20222", si.getEndQtrYYYYQ());
+    assertNull(si.getEndQtrYYYYQ());
   }
 
   @Test

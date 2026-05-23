@@ -6,6 +6,7 @@ import edu.ucsb.cs156.courses.services.UCSBAPIQuarterService;
 import edu.ucsb.cs156.courses.services.UCSBSubjectsService;
 import edu.ucsb.cs156.courses.services.jobs.JobContextConsumer;
 import edu.ucsb.cs156.courses.services.jobs.JobService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,11 @@ public class CoursesStartup {
 
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
+
+  @PostConstruct
+  public void validateConfiguredQuarters() {
+    Quarter.validateQuarterRange(startQtrYYYYQ, "START_QTR");
+  }
 
   /**
    * Called once at application startup time . Put code here if you want it to run once each time
@@ -46,8 +52,7 @@ public class CoursesStartup {
 
     String endQtrYYYYQ = ucsbAPIQuarterService.getEndQtrYYYYQ();
 
-    // Validate START_QTR and END_QTR values
-    Quarter.validateQuarterRange(startQtrYYYYQ, "START_QTR");
+    // Validate calculated END_QTR value later since its calculated dynamically
     Quarter.validateQuarterRange(endQtrYYYYQ, "END_QTR");
 
     JobContextConsumer updateCourseDataJob =

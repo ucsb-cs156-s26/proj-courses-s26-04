@@ -436,4 +436,14 @@ public class QuarterTests {
   public void test_validateQuarterRange_2050_is_valid() {
     assertDoesNotThrow(() -> Quarter.validateQuarterRange("20504", "END_QTR"));
   }
+
+  @Test
+  public void test_validateQuarterRange_invalidQuarterDigit_zero() {
+    assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("20220", "START_QTR"));
+  }
+
+  @Test
+  public void test_validateQuarterRange_invalidQuarterDigit_five() {
+    assertThrows(RuntimeException.class, () -> Quarter.validateQuarterRange("20225", "START_QTR"));
+  }
 }
