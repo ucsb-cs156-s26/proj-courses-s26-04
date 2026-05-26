@@ -139,7 +139,7 @@ describe("CSVDownloadsPage tests", () => {
     const levelDropdown = screen.getByLabelText("Course Level");
     const omitSectionsCheckbox = screen.getByLabelText("Omit sections");
     const withTimeLocationsCheckbox = screen.getByLabelText(
-      "With time/locations",
+      "Only courses with times/locations assigned",
     );
 
     fireEvent.change(quarterDropdown, { target: { value: "20241" } });

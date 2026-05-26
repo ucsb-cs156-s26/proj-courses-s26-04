@@ -146,7 +146,7 @@ export default function CSVDownloadsPage() {
                   className="mb-3"
                   type="checkbox"
                   id="withTimeLocations"
-                  label="With time/locations"
+                  label="Only courses with times/locations assigned"
                   checked={withTimeLocations}
                   onChange={(e) => setWithTimeLocations(e.target.checked)}
                 />
