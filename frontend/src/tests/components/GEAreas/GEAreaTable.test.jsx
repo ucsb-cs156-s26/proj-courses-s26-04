@@ -47,6 +47,10 @@ describe("GEAreaTable tests", () => {
     expect(
       screen.getByTestId("GEAreaTable-row-0-cannot-expand"),
     ).toBeInTheDocument();
+
+    expect(
+      screen.getByTestId("GEAreaTable-cell-row-0-col-generalEducation"),
+    ).toHaveTextContent("");
   });
 
   test("has the expected column headers expand toggles and formatted cells", async () => {
@@ -64,6 +68,7 @@ describe("GEAreaTable tests", () => {
       "Quarter",
       "Course ID",
       "Title",
+      "GE Areas",
       "Status",
       "Enrolled",
       "Location",
@@ -112,6 +117,10 @@ describe("GEAreaTable tests", () => {
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-title`),
     ).toHaveTextContent("CALC W/ ALG & TRIG");
+
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-generalEducation`),
+    ).toHaveTextContent("C, QNT");
 
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-status`),
