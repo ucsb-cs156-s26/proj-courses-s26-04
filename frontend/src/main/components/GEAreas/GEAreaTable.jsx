@@ -14,6 +14,9 @@ import {
 } from "main/utils/sectionUtils.jsx";
 import { yyyyqToQyy } from "main/utils/quarterUtilities";
 
+const formatGeneralEducation = (generalEducation) =>
+  (generalEducation ?? []).map((ge) => ge.geCode.trim()).join(", ");
+
 export default function GEAreaTable({ generalEducation }) {
   const testid = "GEAreaTable";
 
@@ -64,6 +67,11 @@ export default function GEAreaTable({ generalEducation }) {
     {
       accessorKey: "title",
       header: "Title",
+    },
+    {
+      header: "GE Areas",
+      id: "generalEducation",
+      cell: ({ row }) => formatGeneralEducation(row.original.generalEducation),
     },
     {
       header: "Status",
