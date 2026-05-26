@@ -72,6 +72,9 @@ describe("GeneralEducationSearchPage tests", () => {
         screen.getByTestId(`${tableTestId}-cell-row-0-col-quarter`),
       ).toHaveTextContent("F24");
       expect(
+        screen.getByTestId(`${tableTestId}-cell-row-0-col-generalEducation`),
+      ).toHaveTextContent("C, QNT");
+      expect(
         screen.getByTestId(`${tableTestId}-cell-row-0.0-col-enrollCode`),
       ).toHaveTextContent("30254");
     });
