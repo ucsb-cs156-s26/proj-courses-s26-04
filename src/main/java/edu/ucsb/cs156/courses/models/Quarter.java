@@ -218,6 +218,28 @@ public class Quarter {
   }
 
   /**
+   * Validate that a quarter string in YYYYQ format has a valid year (1980-2050) and quarter digit
+   * (1-4). Throws RuntimeException if invalid.
+   *
+   * @param quarterYYYYQ the quarter string in YYYYQ format
+   * @param quarterName the name of this quarter (e.g., "START_QTR") for error messages
+   * @throws RuntimeException if the quarter is invalid
+   */
+  public static void validateQuarterRange(String quarterYYYYQ, String quarterName) {
+    String errorPrefix = "Invalid " + quarterName + " value: " + quarterYYYYQ;
+    int yyyyq;
+    try {
+      yyyyq = Quarter.yyyyqToInt(quarterYYYYQ);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(errorPrefix + " - " + e.getMessage());
+    }
+    int year = yyyyq / 10;
+    if (year < 1980 || year > 2050) {
+      throw new RuntimeException(errorPrefix + " - Year must be between 1980 and 2050");
+    }
+  }
+
+  /**
    * return a list of Quarters starting with the start parameter and ending with the end parameter,
    * inclusive.
    *
