@@ -218,6 +218,28 @@ public class Quarter {
   }
 
   /**
+   * Validate that a quarter string in YYYYQ format has a valid year (1980-2050) and quarter digit
+   * (1-4). Throws RuntimeException if invalid.
+   *
+   * @param quarterYYYYQ the quarter string in YYYYQ format
+   * @param quarterName the name of this quarter (e.g., &quot;START_QTR&quot;) for error messages
+   * @throws RuntimeException if the quarter is invalid
+   */
+  public static void validateQuarterRange(String quarterYYYYQ, String quarterName) {
+<span class="fc" id="L229">    String errorPrefix = &quot;Invalid &quot; + quarterName + &quot; value: &quot; + quarterYYYYQ;</span>
+    int yyyyq;
+    try {
+<span class="fc" id="L232">      yyyyq = Quarter.yyyyqToInt(quarterYYYYQ);</span>
+<span class="fc" id="L233">    } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L234">      throw new RuntimeException(errorPrefix + &quot; - &quot; + e.getMessage());</span>
+<span class="fc" id="L235">    }</span>
+<span class="fc" id="L236">    int year = yyyyq / 10;</span>
+<span class="fc bfc" id="L237" title="All 4 branches covered.">    if (year &lt; 1980 || year &gt; 2050) {</span>
+<span class="fc" id="L238">      throw new RuntimeException(errorPrefix + &quot; - Year must be between 1980 and 2050&quot;);</span>
+    }
+<span class="fc" id="L240">  }</span>
+
+  /**
    * return a list of Quarters starting with the start parameter and ending with the end parameter,
    * inclusive.
    *
@@ -229,24 +251,24 @@ public class Quarter {
    * @return list of quarters in specified order
    */
   public static List&lt;Quarter&gt; quarterList(String start, String end) {
-<span class="fc" id="L232">    List&lt;Quarter&gt; result = new ArrayList&lt;Quarter&gt;();</span>
+<span class="fc" id="L254">    List&lt;Quarter&gt; result = new ArrayList&lt;Quarter&gt;();</span>
 
-<span class="fc" id="L234">    int startInt = Quarter.yyyyqToInt(start);</span>
-<span class="fc" id="L235">    int endInt = Quarter.yyyyqToInt(end);</span>
+<span class="fc" id="L256">    int startInt = Quarter.yyyyqToInt(start);</span>
+<span class="fc" id="L257">    int endInt = Quarter.yyyyqToInt(end);</span>
 
-<span class="fc bfc" id="L237" title="All 2 branches covered.">    if (startInt &lt; endInt) {</span>
-<span class="fc bfc" id="L238" title="All 2 branches covered.">      for (Quarter iter = new Quarter(startInt); iter.getValue() &lt;= endInt; iter.increment()) {</span>
-<span class="fc" id="L239">        Quarter q = new Quarter(iter.getValue());</span>
-<span class="fc" id="L240">        result.add(q);</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">    if (startInt &lt; endInt) {</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">      for (Quarter iter = new Quarter(startInt); iter.getValue() &lt;= endInt; iter.increment()) {</span>
+<span class="fc" id="L261">        Quarter q = new Quarter(iter.getValue());</span>
+<span class="fc" id="L262">        result.add(q);</span>
       }
     }
-<span class="fc bfc" id="L243" title="All 2 branches covered.">    if (startInt &gt;= endInt) {</span>
-<span class="fc bfc" id="L244" title="All 2 branches covered.">      for (Quarter iter = new Quarter(startInt); iter.getValue() &gt;= endInt; iter.decrement()) {</span>
-<span class="fc" id="L245">        Quarter q = new Quarter(iter.getValue());</span>
-<span class="fc" id="L246">        result.add(q);</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">    if (startInt &gt;= endInt) {</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">      for (Quarter iter = new Quarter(startInt); iter.getValue() &gt;= endInt; iter.decrement()) {</span>
+<span class="fc" id="L267">        Quarter q = new Quarter(iter.getValue());</span>
+<span class="fc" id="L268">        result.add(q);</span>
       }
     }
-<span class="fc" id="L249">    return result;</span>
+<span class="fc" id="L271">    return result;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
