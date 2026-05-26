@@ -2,7 +2,7 @@ import { useState } from "react";
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import CourseOverTimeSearchForm from "main/components/BasicCourseSearch/CourseOverTimeSearchForm";
 import { useBackendMutation } from "main/utils/useBackend";
-import ConvertedSectionTable from "main/components/Common/ConvertedSectionTable";
+import ConvertedSectionExpandableTable from "main/components/Common/ConvertedSectionExpandableTable";
 
 export default function CourseOverTimeIndexPage() {
   // Stryker disable next-line all : Can't test state because hook is internal
@@ -38,7 +38,7 @@ export default function CourseOverTimeIndexPage() {
       <div className="pt-2">
         <h5>UCSB Course History Search</h5>
         <CourseOverTimeSearchForm fetchJSON={fetchCourseOverTimeJSON} />
-        <ConvertedSectionTable sections={courseJSON} />
+        <ConvertedSectionExpandableTable sections={courseJSON} />
       </div>
     </BasicLayout>
   );
