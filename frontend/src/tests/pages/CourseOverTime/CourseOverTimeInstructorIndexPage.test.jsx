@@ -100,5 +100,8 @@ describe("CourseOverTimeInstructorIndexPage tests", () => {
     );
 
     expect(screen.getByText("COMP ENGR SEMINAR")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("ConvertedSectionTable-cell-row-0-col-description"),
+    ).toBeInTheDocument();
   });
 });

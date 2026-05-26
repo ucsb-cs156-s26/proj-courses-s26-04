@@ -19,6 +19,7 @@ describe("ConvertedSectionTable tests", () => {
       "Time",
       "Location",
       "Instructors",
+      "Description",
       "Section",
       "Session",
     ];
@@ -81,6 +82,14 @@ describe("ConvertedSectionTable tests", () => {
     );
     expect(instructors).toBeInTheDocument();
     expect(instructors).toHaveTextContent("WANG L C");
+
+    const description = screen.getByTestId(
+      `${testid}-cell-row-0-col-description`,
+    );
+    expect(description).toBeInTheDocument();
+    expect(description).toHaveTextContent(
+      "Introductory seminar to expose students to a broad range of topics in computer engineering.",
+    );
   });
 
   test("renders session value from session[5]", () => {

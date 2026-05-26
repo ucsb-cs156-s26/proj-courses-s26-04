@@ -66,6 +66,11 @@ function ConvertedSectionTable({ sections, testid = "ConvertedSectionTable" }) {
       cell: ({ row }) => formatInstructors(row.original.section.instructors),
     },
     {
+      header: "Description",
+      accessorKey: "description",
+      cell: ({ row }) => row.original.courseInfo.description,
+    },
+    {
       header: "Section",
       accessorKey: "section",
       cell: ({ row }) => row.original.section.section,
