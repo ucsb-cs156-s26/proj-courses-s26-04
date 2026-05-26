@@ -100,5 +100,8 @@ describe("CourseOverTimeDescriptionIndexPage tests", () => {
     );
 
     expect(screen.getByText("ECE 1A -1")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("ConvertedSectionTable-cell-row-0-col-description"),
+    ).toBeInTheDocument();
   });
 });

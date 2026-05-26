@@ -24,9 +24,6 @@ public class SystemInfoServiceImpl extends SystemInfoService {
   @Value("${app.startQtrYYYYQ:20221}")
   private String startQtrYYYYQ;
 
-  @Value("${app.endQtrYYYYQ:20222}")
-  private String endQtrYYYYQ;
-
   @Autowired private UCSBAPIQuarterService ucsbApiQuarterService;
 
   @Value("${app.sourceRepo:https://github.com/ucsb-cs156/proj-courses}")
@@ -43,15 +40,12 @@ public class SystemInfoServiceImpl extends SystemInfoService {
   }
 
   public SystemInfo getSystemInfo() {
-    String endQtr = this.endQtrYYYYQ;
+    String endQtr = null;
     try {
       // prefer runtime-computed END_QTR when available
       endQtr = ucsbApiQuarterService.getEndQtrYYYYQ();
     } catch (Exception e) {
-      log.warn(
-          "Unable to compute runtime endQtrYYYYQ, falling back to configured value {}",
-          this.endQtrYYYYQ,
-          e);
+      log.warn("Unable to compute runtime endQtrYYYYQ; END_QTR config is deprecated", e);
     }
 
     SystemInfo si =

@@ -91,6 +91,9 @@ describe("CourseOverTimeBuildingsIndexPage tests", () => {
     expect(
       screen.getByText((text) => text.includes("184")),
     ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("ConvertedSectionTable-cell-row-0-col-description"),
+    ).toBeInTheDocument();
   });
 
   test("filters sections by classroom when classroom is selected", async () => {
